@@ -1,0 +1,7 @@
+dd if=/home/jxb/OS/loader.bin of=/home/jxb/bochs/bin/hd60M.img bs=512 seek=2 count=4 conv=notrunc
+# if=file 指定要被读取的文件
+# of=file 制定数据输出的文件
+# bs=BYTES dd 是以块为单位来进行IO 操作的，得告诉人家块是多大字节,此项指定块的大小
+# count=BLOCKS 此项是指定拷贝的块数
+# seek= BLOCKS 指定当我们把块输出到文件时想要跳过多少个块
+# conv=CONVS 此项是指定如何转换文件,在追加数据时， conv 最好用notrunc 方式，也就是不打断文件

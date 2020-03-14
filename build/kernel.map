@@ -1,0 +1,652 @@
+
+分配公共符号
+公共符号            大小              文件
+
+thread_ready_list   0x10              /home/jxb/OS/build/thread.o
+thread_all_list     0x10              /home/jxb/OS/build/thread.o
+user_pool           0x10              /home/jxb/OS/build/memory.o
+intr_name           0xc0              /home/jxb/OS/build/interrupt.o
+main_thread         0x4               /home/jxb/OS/build/thread.o
+ticks               0x4               /home/jxb/OS/build/timer.o
+kdb_buf             0x6c              /home/jxb/OS/build/keyboard.o
+kernel_vaddr        0xc               /home/jxb/OS/build/memory.o
+idt_table           0xc0              /home/jxb/OS/build/interrupt.o
+kernel_pool         0x10              /home/jxb/OS/build/memory.o
+
+舍弃的输入节
+
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/main.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/main.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/init.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/init.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/init.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/interrupt.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/interrupt.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/interrupt.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/interrupt.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/timer.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/timer.o
+ .text.__x86.get_pc_thunk.ax
+                0x0000000000000000        0x4 /home/jxb/OS/build/timer.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/timer.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/timer.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/debug.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/debug.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/debug.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/string.o
+ .text.__x86.get_pc_thunk.ax
+                0x0000000000000000        0x4 /home/jxb/OS/build/string.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/string.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/memory.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/memory.o
+ .text.__x86.get_pc_thunk.ax
+                0x0000000000000000        0x4 /home/jxb/OS/build/memory.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/memory.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/memory.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/bitmap.o
+ .text.__x86.get_pc_thunk.ax
+                0x0000000000000000        0x4 /home/jxb/OS/build/bitmap.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/bitmap.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/thread.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/thread.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/thread.o
+ .text.__x86.get_pc_thunk.ax
+                0x0000000000000000        0x4 /home/jxb/OS/build/thread.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/thread.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/thread.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/list.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/list.o
+ .text.__x86.get_pc_thunk.ax
+                0x0000000000000000        0x4 /home/jxb/OS/build/list.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/list.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/list.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/console.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/console.o
+ .text.__x86.get_pc_thunk.ax
+                0x0000000000000000        0x4 /home/jxb/OS/build/console.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/console.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/console.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/sync.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/sync.o
+ .text.__x86.get_pc_thunk.ax
+                0x0000000000000000        0x4 /home/jxb/OS/build/sync.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/sync.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/sync.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/keyboard.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/keyboard.o
+ .text.__x86.get_pc_thunk.ax
+                0x0000000000000000        0x4 /home/jxb/OS/build/keyboard.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/keyboard.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/keyboard.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/ioqueue.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/ioqueue.o
+ .text.__x86.get_pc_thunk.ax
+                0x0000000000000000        0x4 /home/jxb/OS/build/ioqueue.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/ioqueue.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/ioqueue.o
+
+内存配置
+
+名称           来源             长度             属性
+*default*        0x0000000000000000 0xffffffffffffffff
+
+链结器命令稿和内存映射
+
+段 .text 的地址设置为 0xc0001500
+LOAD /home/jxb/OS/build/main.o
+LOAD /home/jxb/OS/build/init.o
+LOAD /home/jxb/OS/build/interrupt.o
+LOAD /home/jxb/OS/build/timer.o
+LOAD /home/jxb/OS/build/kernel.o
+LOAD /home/jxb/OS/build/print.o
+LOAD /home/jxb/OS/build/debug.o
+LOAD /home/jxb/OS/build/string.o
+LOAD /home/jxb/OS/build/memory.o
+LOAD /home/jxb/OS/build/bitmap.o
+LOAD /home/jxb/OS/build/thread.o
+LOAD /home/jxb/OS/build/list.o
+LOAD /home/jxb/OS/build/switch.o
+LOAD /home/jxb/OS/build/console.o
+LOAD /home/jxb/OS/build/sync.o
+LOAD /home/jxb/OS/build/keyboard.o
+LOAD /home/jxb/OS/build/ioqueue.o
+                [!provide]                        PROVIDE (__executable_start = SEGMENT_START ("text-segment", 0x8048000))
+                0x00000000080480d4                . = (SEGMENT_START ("text-segment", 0x8048000) + SIZEOF_HEADERS)
+
+.interp
+ *(.interp)
+
+.note.gnu.build-id
+ *(.note.gnu.build-id)
+
+.hash
+ *(.hash)
+
+.gnu.hash
+ *(.gnu.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.dyn        0x00000000080480d4        0x0
+ *(.rel.init)
+ *(.rel.text .rel.text.* .rel.gnu.linkonce.t.*)
+ .rel.text      0x00000000080480d4        0x0 /home/jxb/OS/build/main.o
+ *(.rel.fini)
+ *(.rel.rodata .rel.rodata.* .rel.gnu.linkonce.r.*)
+ *(.rel.data.rel.ro .rel.data.rel.ro.* .rel.gnu.linkonce.d.rel.ro.*)
+ *(.rel.data .rel.data.* .rel.gnu.linkonce.d.*)
+ *(.rel.tdata .rel.tdata.* .rel.gnu.linkonce.td.*)
+ *(.rel.tbss .rel.tbss.* .rel.gnu.linkonce.tb.*)
+ *(.rel.ctors)
+ *(.rel.dtors)
+ *(.rel.got)
+ .rel.got       0x00000000080480d4        0x0 /home/jxb/OS/build/main.o
+ *(.rel.bss .rel.bss.* .rel.gnu.linkonce.b.*)
+ *(.rel.ifunc)
+
+.rel.plt        0x00000000080480d4        0x0
+ *(.rel.plt)
+                [!provide]                        PROVIDE (__rel_iplt_start = .)
+ *(.rel.iplt)
+ .rel.iplt      0x00000000080480d4        0x0 /home/jxb/OS/build/main.o
+                [!provide]                        PROVIDE (__rel_iplt_end = .)
+                0x0000000008049000                . = ALIGN (CONSTANT (MAXPAGESIZE))
+
+.init
+ *(SORT_NONE(.init))
+
+.plt            0x0000000008049000        0x0
+ *(.plt)
+ *(.iplt)
+ .iplt          0x0000000008049000        0x0 /home/jxb/OS/build/main.o
+
+.plt.got
+ *(.plt.got)
+
+.plt.sec
+ *(.plt.sec)
+
+.text           0x00000000c0001500     0x2e13
+ *(.text.unlikely .text.*_unlikely .text.unlikely.*)
+ *(.text.exit .text.exit.*)
+ *(.text.startup .text.startup.*)
+ *(.text.hot .text.hot.*)
+ *(.text .stub .text.* .gnu.linkonce.t.*)
+ .text          0x00000000c0001500       0x93 /home/jxb/OS/build/main.o
+                0x00000000c0001500                main
+                0x00000000c0001557                k1
+ .text.__x86.get_pc_thunk.bx
+                0x00000000c0001593        0x4 /home/jxb/OS/build/main.o
+                0x00000000c0001593                __x86.get_pc_thunk.bx
+ .text          0x00000000c0001597       0x5a /home/jxb/OS/build/init.o
+                0x00000000c0001597                init_all
+ .text          0x00000000c00015f1      0x55a /home/jxb/OS/build/interrupt.o
+                0x00000000c000161c                idt_init
+                0x00000000c0001a74                intr_get_status
+                0x00000000c0001a9b                intr_enable
+                0x00000000c0001acc                intr_disable
+                0x00000000c0001afd                register_handler
+                0x00000000c0001b26                intr_set_status
+ .text.__x86.get_pc_thunk.ax
+                0x00000000c0001b4b        0x4 /home/jxb/OS/build/interrupt.o
+                0x00000000c0001b4b                __x86.get_pc_thunk.ax
+ .text          0x00000000c0001b4f      0x10b /home/jxb/OS/build/timer.o
+                0x00000000c0001c0a                time_init
+ *fill*         0x00000000c0001c5a        0x6 
+ .text          0x00000000c0001c60      0x537 /home/jxb/OS/build/kernel.o
+                0x00000000c0001c60                intr_exit
+ *fill*         0x00000000c0002197        0x9 
+ .text          0x00000000c00021a0      0x179 /home/jxb/OS/build/print.o
+                0x00000000c00021a0                put_int
+                0x00000000c0002208                put_str
+                0x00000000c0002226                put_char
+                0x00000000c00022ef                set_cursor
+ .text          0x00000000c0002319       0xf4 /home/jxb/OS/build/debug.o
+                0x00000000c0002319                panic_spin
+ .text          0x00000000c000240d      0x4b8 /home/jxb/OS/build/string.o
+                0x00000000c000240d                memset
+                0x00000000c0002475                memcpy
+                0x00000000c00024eb                memcmp
+                0x00000000c0002584                strcpy
+                0x00000000c00025ef                strlen
+                0x00000000c0002649                strcmp
+                0x00000000c00026dd                strchr
+                0x00000000c000274b                strrchr
+                0x00000000c00027d3                strcat
+                0x00000000c0002853                strchrs
+ .text          0x00000000c00028c5      0x6b1 /home/jxb/OS/build/memory.o
+                0x00000000c0002b94                get_pde_ptr
+                0x00000000c0002bb1                get_pte_ptr
+                0x00000000c0002d89                malloc_page
+                0x00000000c0002ead                get_kernel_page
+                0x00000000c0002ef7                mem_init
+ .text          0x00000000c0002f76      0x234 /home/jxb/OS/build/bitmap.o
+                0x00000000c0002f76                bitmap_init
+                0x00000000c0002fa9                bitmap_scan_test
+                0x00000000c0002ff4                bitmap_set
+                0x00000000c00030be                bitmap_scan
+ .text          0x00000000c00031aa      0x5b5 /home/jxb/OS/build/thread.o
+                0x00000000c00031d6                running_thread
+                0x00000000c00031f5                thread_start
+                0x00000000c0003353                init_thread
+                0x00000000c00033f8                thread_create
+                0x00000000c000347c                schedule
+                0x00000000c00035ae                thread_init
+                0x00000000c0003613                thread_block
+                0x00000000c000368c                thread_unblock
+ .text.__x86.get_pc_thunk.dx
+                0x00000000c000375f        0x4 /home/jxb/OS/build/thread.o
+                0x00000000c000375f                __x86.get_pc_thunk.dx
+ .text          0x00000000c0003763      0x25c /home/jxb/OS/build/list.o
+                0x00000000c0003763                list_init
+                0x00000000c000379b                list_insert_before
+                0x00000000c00037ef                list_push
+                0x00000000c0003817                list_append
+                0x00000000c000383f                list_remove
+                0x00000000c0003888                list_pop
+                0x00000000c00038b4                elem_find
+                0x00000000c00038f9                list_len
+                0x00000000c0003938                list_traversal
+                0x00000000c000399c                list_empty
+ *fill*         0x00000000c00039bf        0x1 
+ .text          0x00000000c00039c0       0x15 /home/jxb/OS/build/switch.o
+                0x00000000c00039c0                switch_to
+ .text          0x00000000c00039d5      0x119 /home/jxb/OS/build/console.o
+                0x00000000c00039d5                console_init
+                0x00000000c0003a00                console_acquire
+                0x00000000c0003a2b                console_release
+                0x00000000c0003a56                console_put_str
+                0x00000000c0003a86                console_put_char
+                0x00000000c0003abe                console_put_int
+ .text          0x00000000c0003aee      0x2ea /home/jxb/OS/build/sync.o
+                0x00000000c0003aee                sema_init
+                0x00000000c0003b28                lock_init
+                0x00000000c0003b62                sema_down
+                0x00000000c0003bfb                sema_up
+                0x00000000c0003cc5                lock_acquire
+                0x00000000c0003d24                lock_release
+ .text          0x00000000c0003dd8      0x2aa /home/jxb/OS/build/keyboard.o
+                0x00000000c0004044                keyboard_init
+ .text          0x00000000c0004082      0x291 /home/jxb/OS/build/ioqueue.o
+                0x00000000c0004082                ioq_init
+                0x00000000c00040d6                ioq_empty
+                0x00000000c00040f9                ioq_full
+                0x00000000c0004132                ioq_wait
+                0x00000000c000418b                wakeup
+                0x00000000c00041be                ioq_getchar
+                0x00000000c0004267                ioq_putchar
+ *(.gnu.warning)
+
+.fini
+ *(SORT_NONE(.fini))
+                [!provide]                        PROVIDE (__etext = .)
+                [!provide]                        PROVIDE (_etext = .)
+                [!provide]                        PROVIDE (etext = .)
+                0x00000000c0005000                . = ALIGN (CONSTANT (MAXPAGESIZE))
+                0x00000000c0005000                . = SEGMENT_START ("rodata-segment", (ALIGN (CONSTANT (MAXPAGESIZE)) + (. & (CONSTANT (MAXPAGESIZE) - 0x1))))
+
+.rodata         0x00000000c0005000      0x96d
+ *(.rodata .rodata.* .gnu.linkonce.r.*)
+ .rodata        0x00000000c0005000       0x1b /home/jxb/OS/build/main.o
+ .rodata        0x00000000c000501b       0x1f /home/jxb/OS/build/init.o
+ *fill*         0x00000000c000503a        0x2 
+ .rodata        0x00000000c000503c      0x2c2 /home/jxb/OS/build/interrupt.o
+ *fill*         0x00000000c00052fe        0x2 
+ .rodata        0x00000000c0005300       0x45 /home/jxb/OS/build/timer.o
+ .rodata        0x00000000c0005345       0x31 /home/jxb/OS/build/debug.o
+ *fill*         0x00000000c0005376        0x2 
+ .rodata        0x00000000c0005378      0x118 /home/jxb/OS/build/string.o
+ .rodata        0x00000000c0005490      0x18d /home/jxb/OS/build/memory.o
+ *fill*         0x00000000c000561d        0x3 
+ .rodata        0x00000000c0005620       0x3b /home/jxb/OS/build/bitmap.o
+ *fill*         0x00000000c000565b        0x1 
+ .rodata        0x00000000c000565c      0x23f /home/jxb/OS/build/thread.o
+ *fill*         0x00000000c000589b        0x1 
+ .rodata        0x00000000c000589c       0x95 /home/jxb/OS/build/sync.o
+ .rodata        0x00000000c0005931        0xd /home/jxb/OS/build/keyboard.o
+ *fill*         0x00000000c000593e        0x2 
+ .rodata        0x00000000c0005940       0x2d /home/jxb/OS/build/ioqueue.o
+
+.rodata1
+ *(.rodata1)
+
+.eh_frame_hdr
+ *(.eh_frame_hdr)
+ *(.eh_frame_entry .eh_frame_entry.*)
+
+.eh_frame       0x00000000c0005970      0xbc8
+ *(.eh_frame)
+ .eh_frame      0x00000000c0005970       0x70 /home/jxb/OS/build/main.o
+ .eh_frame      0x00000000c00059e0       0x24 /home/jxb/OS/build/init.o
+                                         0x50 (松开之前的大小)
+ .eh_frame      0x00000000c0005a04      0x1b4 /home/jxb/OS/build/interrupt.o
+                                        0x1e0 (松开之前的大小)
+ .eh_frame      0x00000000c0005bb8       0x68 /home/jxb/OS/build/timer.o
+                                         0xa8 (松开之前的大小)
+ .eh_frame      0x00000000c0005c20       0x1c /home/jxb/OS/build/debug.o
+                                         0x48 (松开之前的大小)
+ .eh_frame      0x00000000c0005c3c      0x168 /home/jxb/OS/build/string.o
+                                        0x194 (松开之前的大小)
+ .eh_frame      0x00000000c0005da4      0x13c /home/jxb/OS/build/memory.o
+                                        0x17c (松开之前的大小)
+ .eh_frame      0x00000000c0005ee0       0x8c /home/jxb/OS/build/bitmap.o
+                                         0xb8 (松开之前的大小)
+ .eh_frame      0x00000000c0005f6c      0x174 /home/jxb/OS/build/thread.o
+                                        0x1b4 (松开之前的大小)
+ .eh_frame      0x00000000c00060e0      0x148 /home/jxb/OS/build/list.o
+                                        0x188 (松开之前的大小)
+ .eh_frame      0x00000000c0006228       0xd8 /home/jxb/OS/build/console.o
+                                        0x118 (松开之前的大小)
+ .eh_frame      0x00000000c0006300       0xdc /home/jxb/OS/build/sync.o
+                                        0x11c (松开之前的大小)
+ .eh_frame      0x00000000c00063dc       0x68 /home/jxb/OS/build/keyboard.o
+                                         0xa8 (松开之前的大小)
+ .eh_frame      0x00000000c0006444       0xf4 /home/jxb/OS/build/ioqueue.o
+                                        0x134 (松开之前的大小)
+ *(.eh_frame.*)
+
+.gcc_except_table
+ *(.gcc_except_table .gcc_except_table.*)
+
+.gnu_extab
+ *(.gnu_extab*)
+
+.exception_ranges
+ *(.exception_ranges*)
+                0x00000000c0008000                . = DATA_SEGMENT_ALIGN (CONSTANT (MAXPAGESIZE), CONSTANT (COMMONPAGESIZE))
+
+.eh_frame
+ *(.eh_frame)
+ *(.eh_frame.*)
+
+.gnu_extab
+ *(.gnu_extab)
+
+.gcc_except_table
+ *(.gcc_except_table .gcc_except_table.*)
+
+.exception_ranges
+ *(.exception_ranges*)
+
+.tdata          0x00000000c0008000        0x0
+                [!provide]                        PROVIDE (__tdata_start = .)
+ *(.tdata .tdata.* .gnu.linkonce.td.*)
+
+.tbss
+ *(.tbss .tbss.* .gnu.linkonce.tb.*)
+ *(.tcommon)
+
+.preinit_array  0x00000000c0008000        0x0
+                [!provide]                        PROVIDE (__preinit_array_start = .)
+ *(.preinit_array)
+                [!provide]                        PROVIDE (__preinit_array_end = .)
+
+.init_array     0x00000000c0008000        0x0
+                [!provide]                        PROVIDE (__init_array_start = .)
+ *(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*))
+ *(.init_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .ctors)
+                [!provide]                        PROVIDE (__init_array_end = .)
+
+.fini_array     0x00000000c0008000        0x0
+                [!provide]                        PROVIDE (__fini_array_start = .)
+ *(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*))
+ *(.fini_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .dtors)
+                [!provide]                        PROVIDE (__fini_array_end = .)
+
+.ctors
+ *crtbegin.o(.ctors)
+ *crtbegin?.o(.ctors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
+ *(SORT_BY_NAME(.ctors.*))
+ *(.ctors)
+
+.dtors
+ *crtbegin.o(.dtors)
+ *crtbegin?.o(.dtors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
+ *(SORT_BY_NAME(.dtors.*))
+ *(.dtors)
+
+.jcr
+ *(.jcr)
+
+.data.rel.ro
+ *(.data.rel.ro.local* .gnu.linkonce.d.rel.ro.local.*)
+ *(.data.rel.ro .data.rel.ro.* .gnu.linkonce.d.rel.ro.*)
+
+.dynamic
+ *(.dynamic)
+
+.got            0x00000000c0008000        0x0
+ *(.got)
+ .got           0x00000000c0008000        0x0 /home/jxb/OS/build/main.o
+ *(.igot)
+                0x00000000c0008ff4                . = DATA_SEGMENT_RELRO_END (., (SIZEOF (.got.plt) >= 0xc)?0xc:0x0)
+
+.got.plt        0x00000000c0008000        0xc
+ *(.got.plt)
+ .got.plt       0x00000000c0008000        0xc /home/jxb/OS/build/main.o
+                0x00000000c0008000                _GLOBAL_OFFSET_TABLE_
+ *(.igot.plt)
+ .igot.plt      0x00000000c000800c        0x0 /home/jxb/OS/build/main.o
+
+.data           0x00000000c0008020      0x156
+ *(.data .data.* .gnu.linkonce.d.*)
+ .data          0x00000000c0008020        0x0 /home/jxb/OS/build/main.o
+ .data          0x00000000c0008020        0x0 /home/jxb/OS/build/init.o
+ .data          0x00000000c0008020        0x0 /home/jxb/OS/build/interrupt.o
+ .data          0x00000000c0008020        0x0 /home/jxb/OS/build/timer.o
+ .data          0x00000000c0008020       0xd2 /home/jxb/OS/build/kernel.o
+                0x00000000c0008032                intr_entry_table
+ *fill*         0x00000000c00080f2        0x2 
+ .data          0x00000000c00080f4        0x8 /home/jxb/OS/build/print.o
+ .data          0x00000000c00080fc        0x0 /home/jxb/OS/build/debug.o
+ .data          0x00000000c00080fc        0x0 /home/jxb/OS/build/string.o
+ .data          0x00000000c00080fc        0x0 /home/jxb/OS/build/memory.o
+ .data          0x00000000c00080fc        0x0 /home/jxb/OS/build/bitmap.o
+ .data          0x00000000c00080fc        0x0 /home/jxb/OS/build/thread.o
+ .data          0x00000000c00080fc        0x0 /home/jxb/OS/build/list.o
+ .data          0x00000000c00080fc        0x0 /home/jxb/OS/build/console.o
+ .data          0x00000000c00080fc        0x0 /home/jxb/OS/build/sync.o
+ *fill*         0x00000000c00080fc        0x4 
+ .data          0x00000000c0008100       0x76 /home/jxb/OS/build/keyboard.o
+ .data          0x00000000c0008176        0x0 /home/jxb/OS/build/ioqueue.o
+
+.data1
+ *(.data1)
+                0x00000000c0008176                _edata = .
+                [!provide]                        PROVIDE (edata = .)
+                0x00000000c0008176                . = .
+                0x00000000c0008176                __bss_start = .
+
+.bss            0x00000000c0008180      0x40c
+ *(.dynbss)
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss           0x00000000c0008180        0x0 /home/jxb/OS/build/main.o
+ .bss           0x00000000c0008180        0x0 /home/jxb/OS/build/init.o
+ .bss           0x00000000c0008180      0x180 /home/jxb/OS/build/interrupt.o
+ .bss           0x00000000c0008300        0x0 /home/jxb/OS/build/timer.o
+ .bss           0x00000000c0008300        0x0 /home/jxb/OS/build/debug.o
+ .bss           0x00000000c0008300        0x0 /home/jxb/OS/build/string.o
+ .bss           0x00000000c0008300        0x0 /home/jxb/OS/build/memory.o
+ .bss           0x00000000c0008300        0x0 /home/jxb/OS/build/bitmap.o
+ .bss           0x00000000c0008300        0x4 /home/jxb/OS/build/thread.o
+ .bss           0x00000000c0008304        0x0 /home/jxb/OS/build/list.o
+ .bss           0x00000000c0008304       0x1c /home/jxb/OS/build/console.o
+ .bss           0x00000000c0008320        0x0 /home/jxb/OS/build/sync.o
+ .bss           0x00000000c0008320       0x14 /home/jxb/OS/build/keyboard.o
+ .bss           0x00000000c0008334        0x0 /home/jxb/OS/build/ioqueue.o
+ *(COMMON)
+ *fill*         0x00000000c0008334        0xc 
+ COMMON         0x00000000c0008340      0x180 /home/jxb/OS/build/interrupt.o
+                0x00000000c0008340                intr_name
+                0x00000000c0008400                idt_table
+ COMMON         0x00000000c00084c0        0x4 /home/jxb/OS/build/timer.o
+                0x00000000c00084c0                ticks
+ COMMON         0x00000000c00084c4       0x2c /home/jxb/OS/build/memory.o
+                0x00000000c00084c4                user_pool
+                0x00000000c00084d4                kernel_vaddr
+                0x00000000c00084e0                kernel_pool
+ COMMON         0x00000000c00084f0       0x24 /home/jxb/OS/build/thread.o
+                0x00000000c00084f0                thread_ready_list
+                0x00000000c0008500                thread_all_list
+                0x00000000c0008510                main_thread
+ *fill*         0x00000000c0008514        0xc 
+ COMMON         0x00000000c0008520       0x6c /home/jxb/OS/build/keyboard.o
+                0x00000000c0008520                kdb_buf
+                0x00000000c000858c                . = ALIGN ((. != 0x0)?0x4:0x1)
+                0x00000000c000858c                . = ALIGN (0x4)
+                0x00000000c000858c                . = SEGMENT_START ("ldata-segment", .)
+                0x00000000c000858c                . = ALIGN (0x4)
+                0x00000000c000858c                _end = .
+                [!provide]                        PROVIDE (end = .)
+                0x00000000c000858c                . = DATA_SEGMENT_END (.)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x0000000000000000       0x23
+ *(.comment)
+ .comment       0x0000000000000000       0x23 /home/jxb/OS/build/main.o
+                                         0x24 (松开之前的大小)
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/init.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/interrupt.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/timer.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/debug.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/string.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/memory.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/bitmap.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/thread.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/list.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/console.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/sync.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/keyboard.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/ioqueue.o
+
+.gnu.build.attributes
+ *(.gnu.build.attributes .gnu.build.attributes.*)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges
+ *(.debug_aranges)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info
+ *(.debug_info .gnu.linkonce.wi.*)
+
+.debug_abbrev
+ *(.debug_abbrev)
+
+.debug_line
+ *(.debug_line .debug_line.* .debug_line_end)
+
+.debug_frame
+ *(.debug_frame)
+
+.debug_str
+ *(.debug_str)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+.debug_pubtypes
+ *(.debug_pubtypes)
+
+.debug_ranges
+ *(.debug_ranges)
+
+.debug_macro
+ *(.debug_macro)
+
+.debug_addr
+ *(.debug_addr)
+
+.gnu.attributes
+ *(.gnu.attributes)
+
+/DISCARD/
+ *(.note.GNU-stack)
+ *(.gnu_debuglink)
+ *(.gnu.lto_*)
+OUTPUT(/home/jxb/OS/build/kernel.bin elf32-i386)

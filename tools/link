@@ -1,0 +1,2 @@
+ld -m elf_i386 /home/jxb/OS/kernel/kernel.o -Ttext 0xc0001500 -e main -o /home/jxb/OS/kernel/kernel.bin
+
