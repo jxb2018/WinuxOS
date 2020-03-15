@@ -8,8 +8,10 @@
 #include "/home/jxb/OS/lib/kernel/console.h"
 #include "/home/jxb/OS/device/ioqueue.h"
 #include "/home/jxb/OS/device/keyboard.h"
-;void k1(void* arg);
-void k2(void* arg);
+#include "/home/jxb/OS/userprog/process.h"
+void k1(void* arg);
+void u(void);
+int test_var_a = 0;
 int main(void){
     put_str("I am kernel\n");
     init_all();
@@ -26,15 +28,26 @@ int main(void){
     //put_char('\n');
     //struct task_struct* thread_start(char* name,int priority,thread_func function,void* func_arg){
     
-    thread_start("k_thread_a",1,k1,"A ");
-//    thread_start("k_thread_a",1,k2,"B  ");
+   // thread_start("k_thread_a",1,k1,"A ");
+    //thread_start("k_thread_a",1,k1,"B  ");
+    process_execute(u,"test_u"); //oxc0004a69
+     //ASSERT(1==2);
     intr_enable();
+    while(1){
+      console_put_int(test_var_a);
+      console_put_char(' ');
+    }
     while(1);
     return 0;
 }
 void k1(void* arg){
     while(1){
        char ch = ioq_getchar(&kdb_buf);
-        console_put_char(ch);
+       console_put_char(ch);
+    }
+}
+void u(void){
+    while(1){
+        test_var_a ++;
     }
 }

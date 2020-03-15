@@ -223,7 +223,6 @@ set_cursor:
     mov al,bl
     out dx,al
 
-    shr ebx,8
     mov dx,0x3d4
     mov al,0x0e
     out dx,al

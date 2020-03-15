@@ -6,6 +6,7 @@
 #include "/home/jxb/OS/lib/kernel/console.h"
 #include "/home/jxb/OS/thread/thread.h"
 #include "/home/jxb/OS/device/keyboard.h"
+#include "/home/jxb/OS/userprog/tss.h"
 void init_all(){
     put_str("init_all start\n");
     idt_init();
@@ -14,6 +15,7 @@ void init_all(){
     thread_init();
     console_init();
     keyboard_init();
+    tss_init();
     put_str("init_all done\n");
 
 }

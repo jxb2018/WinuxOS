@@ -19,7 +19,7 @@ struct ioqueue{
     int32_t ridx;   // 读
     int32_t widx;  // 写
 };
-int ioq_init(struct ioqueue* ioq);
+void ioq_init(struct ioqueue* ioq);
 int ioq_empty(struct ioqueue* ioq);
 int ioq_full(struct ioqueue* ioq);
 void ioq_wait(struct task_struct** waiter);

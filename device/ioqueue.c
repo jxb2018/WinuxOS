@@ -9,7 +9,7 @@
 #include "/home/jxb/OS/lib/kernel/debug.h"
 #include "ioqueue.h"
 
-int ioq_init(struct ioqueue* ioq){
+void ioq_init(struct ioqueue* ioq){
     lock_init(&ioq->lock);
     ioq->consumer = ioq->producer = NULL;
     ioq->ridx = ioq->widx = 0;

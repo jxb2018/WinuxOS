@@ -8,6 +8,7 @@
 #include "/home/jxb/OS/lib/kernel/list.h"
 #include "/home/jxb/OS/lib/kernel/print.h"
 #include "/home/jxb/OS/lib/kernel/interrupt.h"
+#include "/home/jxb/OS/userprog/process.h"
 #define PG_SIZE 4096
 extern void switch_to(struct task_struct*,struct task_struct*);
 struct task_struct* main_thread;//主线程PCB
@@ -37,18 +38,6 @@ struct task_struct* thread_start(char* name,int priority,thread_func function,vo
     struct task_struct* thread = get_kernel_page(1); //内核地址池里获取一页地址
     init_thread(thread,name,priority);//初始化PCB
     thread_create(thread,function,func_arg);//初始化线程栈、将待执行的函数和参数放到thread_stack中相应的位置
-
-    /*
-    asm volatile("movl %0,%%esp;            \ 
-                  pop %%ebp;                \
-                  pop %%ebx;                \
-                  pop %%edi;                \
-                  pop %%esi;                \
-                  ret"                      \
-                  :                         \
-                  :"g"(thread->self_kstart) \
-                  :"memory"                 \
-    );*/
     ASSERT(!elem_find(&thread_ready_list,&thread->general_tag));
     list_append(&thread_ready_list,&thread->general_tag); //加入就绪队列
     ASSERT(!elem_find(&thread_all_list,&thread->all_list_tag));
@@ -82,17 +71,11 @@ void init_thread(struct task_struct* pthread,char* name,int priority){
 
 //初始化线程栈、将要执行的函数和参数放到thread_stack中相应的位置
 void thread_create(struct task_struct* pthread,thread_func function,void* func_arg){
-    //put_int((uint32_t)pthread->self_kstart);put_char('\n');
     pthread->self_kstart -= sizeof(struct intr_stack); //预留中断栈
-    //put_int((uint32_t)pthread->self_kstart);put_char('\n');
     pthread->self_kstart -= sizeof(struct thread_stack);//预留线程栈
-    //put_int((uint32_t)pthread->self_kstart);put_char('\n');
-    //    ASSERT(1==2);
     struct thread_stack* kthread_stack = \
                     (struct thread_stack*)pthread->self_kstart;
     kthread_stack->eip = kernel_thread;
-    //put_int((uint32_t)kthread_stack->eip);put_char('\n');
-    
     kthread_stack->function = function;
     kthread_stack->func_arg = func_arg;
     kthread_stack->ebp = \
@@ -117,6 +100,7 @@ void schedule(void){
     thread_tag = list_pop(&thread_ready_list);
     struct task_struct* next = elem2entry(struct task_struct,general_tag,thread_tag);
     next->status = TASK_RUNNING;
+    process_activate(next); //激活页表
     switch_to(cur,next);
 }
 

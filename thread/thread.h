@@ -2,6 +2,7 @@
 #define _THEAD_THREAD_H
 #include "stdint.h"
 #include "/home/jxb/OS/lib/kernel/list.h"
+#include "/home/jxb/OS/lib/kernel/memory.h"
 //定义通用函数模型
 typedef void thread_func(void*);   //为拥有参数void*,返回值是void的函数起了一个别名 thread_func
 
@@ -45,8 +46,7 @@ struct thread_stack {
    uint32_t ebx;
    uint32_t edi;
    uint32_t esi;
-   void (*eip) (thread_func* func, void* func_arg);/* 线程第一次执行时,eip指向待调用的函数kernel_thread
-                                                    其它时候,eip是指向switch_to的返回地址*/
+   void (*eip) (thread_func* func, void* func_arg);/* 线程第一次执行时,eip指向待调用的函数kernel_thread,其它时候,eip是指向switch_to的返回地址*/
 //-------以下仅供第一次被调度上cpu时使用------------//
    void (*unused_retaddr);  // 参数unused_ret只为占位置充数为返回地址
    thread_func* function;   // 由Kernel_thread所调用的函数名
@@ -59,15 +59,22 @@ struct task_struct{
    enum task_status status;
    uint8_t priority;   //线程优先级
    char name[16];
-   uint32_t stack_magic;//栈的边界标记，用于检测栈的溢出
    uint8_t ticks;//每次在处理器上执行时间的滴答数
    uint32_t elapsed_ticks;//从运行开始，占用了多少个cpu滴答数
    list_elem general_tag;
    list_elem all_list_tag;
    uint32_t* pgdir;//进程自己页表的虚拟地址
+   struct virtual_addr userprog_vadder;//用户进程的虚拟地址池
+   uint32_t stack_magic;//栈的边界标记，用于检测栈的溢出
 };
-
-
+/*
+struct virtual_addr{
+    struct bitmap vaddr_bitmap; //虚拟地址用到的位图结构
+    uint32_t vaddr_start;//虚拟地址起始地址 ？以这个地址为起始进行分配
+};
+*/
+extern list thread_ready_list;//
+extern list thread_all_list;//所有任务队列
 struct task_struct* thread_start(char* name,int priority,thread_func function,void* func_arg);
 void schedule(void);
 struct task_struct* running_thread(void);

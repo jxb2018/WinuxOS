@@ -24,4 +24,7 @@ void *get_kernel_page(uint32_t pg_cnt);
 uint32_t* get_pde_ptr(uint32_t vaddr);
 uint32_t* get_pte_ptr(uint32_t vaddr);
 void* malloc_page(enum pool_flags pf,uint32_t pg_cnt);
+void* get_user_page(uint32_t pg_cnt);
+void* get_a_page(enum pool_flags pf,uint32_t vaddr);
+uint32_t addr_v2p(uint32_t vaddr);
 #endif
