@@ -92,3 +92,32 @@ VECTOR 0x2c,ZERO	;ps/2鼠标
 VECTOR 0x2d,ZERO	;fpu浮点单元异常
 VECTOR 0x2e,ZERO	;硬盘
 VECTOR 0x2f,ZERO	;保留
+
+
+
+[bits 32]
+extern syscall_table
+global syscall_handler
+section .text 
+
+
+syscall_handler:
+    push 0   ; 使栈中格式一致
+
+    push ds
+    push es 
+    push fs 
+    push gs 
+    pushad 
+
+    push 0x80 ;压入中断向量号 
+
+    ;为系统调用子功能传入参数
+    push edx ;系统调用中第三个参数
+    push ecx ;2
+    push ebx ;1
+
+    call [syscall_table + eax*4] ;
+    add esp,12
+    mov [esp + 8*4],eax ;将函数的返回值写入eax中
+    jmp intr_exit

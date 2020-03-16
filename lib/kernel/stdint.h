@@ -3,6 +3,7 @@
 #define NULL ((void *)0)
 typedef signed char int8_t;
 typedef signed short int int16_t;
+typedef int16_t pid_t;
 typedef signed int int32_t;
 typedef signed long long int int64_t;
 typedef unsigned char uint8_t;

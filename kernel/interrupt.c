@@ -6,7 +6,7 @@
 #include "/home/jxb/OS/lib/kernel/interrupt.h"
 #include "/home/jxb/OS/lib/kernel/print.h"
 #include "/home/jxb/OS/lib/kernel/io.h"
-#define IDT_DESC_CNT  0x30 //支持中断的数量是33
+#define IDT_DESC_CNT  0x81   //支持中断的数量
 #define PIC_M_ICW_1_OCW_23   0x20     //主片的初始化命令寄存器
 #define PIC_M_ICW_234_OCW_1 0x21   
 #define PIC_S_ICW_1_OCW_23   0xA0    //从片的初始化命令寄存器
@@ -17,6 +17,7 @@
 #define GET_EFLAGS(EFLAG_VAR) asm volatile("pushf; popl %0" : "=g"(EFLAG_VAR))
 
 extern void set_cursor(uint32_t );
+extern uint32_t syscall_handler(void);//系统调用处理函数
 // 中断门描述符结构体
 typedef struct gate_desc{
     uint16_t func_offset_low_word;
@@ -55,7 +56,7 @@ void idt_init(void){
     
     idt_desc_init();//初始化中断描述符表
     pic_init();     //初始化8259A
-    exception_init();//注册异常名称
+    exception_init();//注册异常名称和异常处理函数
     uint64_t idt_operand = ((sizeof(idt) - 1) | ((uint64_t)(uint32_t)idt << 16));
     asm volatile("lidt %0" : : "m" (idt_operand));
     put_str("idt_init done\n");
@@ -87,11 +88,14 @@ static void pic_init(void){
 }
 static void idt_desc_init(void){
     int i;
-    for(i=0;i<IDT_DESC_CNT;i++){
+    for(i=0;i<IDT_DESC_CNT - 1;i++){
         make_idt_desc(&idt[i],IDT_DESC_ATTR_DPL0,intr_entry_table[i]);
     }
     put_str("idt_desc_init done\n");
+    //单独处理系统调用，系统调用对应的中断门的dpl是3
+    make_idt_desc(&idt[0x80],IDT_DESC_ATTR_DPL3,syscall_handler);
 }
+//填写中断描述符
 static void make_idt_desc(GATE_DESC *p_gdesc,uint8_t attr,intr_handler fun){
     p_gdesc->func_offset_low_word = ((uint32_t)fun & 0x0000ffff);
     p_gdesc->selector = SELECTOR_K_CODE;
@@ -126,7 +130,7 @@ static void general_intr_handler(uint8_t vec_nr){
 }
 static void exception_init(void){
    int i;
-   for(i=0;i<IDT_DESC_CNT;i++){
+   for(i=0;i<IDT_DESC_CNT  ;i++){
        intr_name[i] = "unknown";
        idt_table[i] = general_intr_handler;
    }

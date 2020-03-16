@@ -9,9 +9,12 @@
 #include "/home/jxb/OS/lib/kernel/print.h"
 #include "/home/jxb/OS/lib/kernel/interrupt.h"
 #include "/home/jxb/OS/userprog/process.h"
+#include "/home/jxb/OS/thread/sync.h"
 #define PG_SIZE 4096
 extern void switch_to(struct task_struct*,struct task_struct*);
 struct task_struct* main_thread;//主线程PCB
+struct lock pid_lock;
+static pid_t next_pid = 0;
 list thread_ready_list;//
 list thread_all_list;//所有任务队列
 static list_elem* thread_tag;//用来保存队列中的线程结点
@@ -44,6 +47,16 @@ struct task_struct* thread_start(char* name,int priority,thread_func function,vo
     list_append(&thread_all_list,&thread->all_list_tag);//加入全部线程队列
     return thread;
 }
+//分配pid
+static pid_t allocate_pid(void){
+    lock_acquire(&pid_lock);
+    next_pid++;
+    lock_release(&pid_lock);
+    return next_pid;
+}
+
+
+
 //将kernel中的main函数完善为主线程
 static void make_main_thread(void){
     main_thread = running_thread();//loader进入时 0xc009f000
@@ -56,6 +69,7 @@ static void make_main_thread(void){
 void init_thread(struct task_struct* pthread,char* name,int priority){
     memset(pthread,0,sizeof(*pthread));
     strcpy(pthread->name,name);
+    pthread->pid = allocate_pid();
     if(pthread == main_thread){
         pthread->status = TASK_RUNNING;
     }else{
@@ -108,6 +122,7 @@ void thread_init(void){
     put_str("thread init start");
     list_init(&thread_ready_list);
     list_init(&thread_all_list);
+    lock_init(&pid_lock);
     make_main_thread();
     put_str("thread_init done\n");
 }

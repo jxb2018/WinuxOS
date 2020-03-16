@@ -9,9 +9,10 @@
 #include "/home/jxb/OS/device/ioqueue.h"
 #include "/home/jxb/OS/device/keyboard.h"
 #include "/home/jxb/OS/userprog/process.h"
+#include "/home/jxb/OS/lib/user/syscall.h"
 void k1(void* arg);
 void u(void);
-int test_var_a = 0;
+int prog_a_pid;
 int main(void){
     put_str("I am kernel\n");
     init_all();
@@ -31,23 +32,26 @@ int main(void){
    // thread_start("k_thread_a",1,k1,"A ");
     //thread_start("k_thread_a",1,k1,"B  ");
     process_execute(u,"test_u"); //oxc0004a69
+    //process_execute(u,"test_2");
      //ASSERT(1==2);
     intr_enable();
+    //prog_a_pid = getpid(); //c0004bb8
     while(1){
-      console_put_int(test_var_a);
-      console_put_char(' ');
+    console_put_str("\npid = ");
+    console_put_int(prog_a_pid);
     }
     while(1);
     return 0;
 }
+void u(void){
+    prog_a_pid = getpid();
+    while(1);
+
+}
+
 void k1(void* arg){
     while(1){
        char ch = ioq_getchar(&kdb_buf);
        console_put_char(ch);
-    }
-}
-void u(void){
-    while(1){
-        test_var_a ++;
     }
 }

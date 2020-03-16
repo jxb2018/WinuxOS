@@ -43,7 +43,7 @@ void page_dir_activate(struct task_struct* p_thread){
     if(p_thread->pgdir != NULL){
         pagedir_phy_addr = addr_v2p((uint32_t)p_thread->pgdir);
     }
-    put_str("\npagedir:");put_int(pagedir_phy_addr); put_char('\n');
+  //  put_str("\npagedir:");put_int(pagedir_phy_addr); put_char('\n');
     //更新页目录寄存器cr3
     asm volatile("movl %0,%%cr3"::"r"(pagedir_phy_addr):"memory");
 }
