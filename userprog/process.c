@@ -87,7 +87,7 @@ void process_execute(void* filename_,char* name){
     create_user_vaddr_bitmap(thread); //c0004a0a
     thread_create(thread,start_process,filename_);
     thread->pgdir = create_page_dir();  //c0004993
-    
+    block_desc_init(thread->u_block_descs);//初始化用户进程内存块描述符
     list_append(&thread_ready_list,&thread->general_tag);
     list_append(&thread_all_list,&thread->all_list_tag);
     

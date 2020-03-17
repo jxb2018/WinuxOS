@@ -10,8 +10,10 @@
 #include "/home/jxb/OS/device/keyboard.h"
 #include "/home/jxb/OS/userprog/process.h"
 #include "/home/jxb/OS/lib/user/syscall.h"
+#include "/home/jxb/OS/lib/stdio.h"
 void k1(void* arg);
 void u(void);
+void k_thread_a(void*);
 int prog_a_pid;
 int main(void){
     put_str("I am kernel\n");
@@ -29,22 +31,27 @@ int main(void){
     //put_char('\n');
     //struct task_struct* thread_start(char* name,int priority,thread_func function,void* func_arg){
     
-   // thread_start("k_thread_a",1,k1,"A ");
+     thread_start("k_thread_a",32,k_thread_a,"A ");
     //thread_start("k_thread_a",1,k1,"B  ");
-    process_execute(u,"test_u"); //oxc0004a69
+    //process_execute(u,"test_u"); //oxc0004a69
     //process_execute(u,"test_2");
      //ASSERT(1==2);
     intr_enable();
     //prog_a_pid = getpid(); //c0004bb8
-    while(1){
-    console_put_str("\npid = ");
-    console_put_int(prog_a_pid);
-    }
     while(1);
     return 0;
 }
+void k_thread_a(void* arg){
+    console_put_str("\nsys_malloc:");
+    uint32_t* addr = sys_malloc(30);
+    console_put_int((int)addr);put_char('\n');
+    addr = sys_malloc(30);
+    console_put_int((int)addr);put_char('\n');
+    while(1);
+
+}
 void u(void){
-    prog_a_pid = getpid();
+    printf("u_pid:%d   %d   %c %x %s\n",-10,10,'m',10,"helloo");
     while(1);
 
 }
