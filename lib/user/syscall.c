@@ -21,3 +21,11 @@ uint32_t getpid(){
 uint32_t write(char* str){
     return _syscall1(SYS_WRITE,str);
 }
+//分配内存
+void* malloc(uint32_t size){
+    return _syscall1(SYS_MALLOC,size);
+}
+//释放内存
+void free(void* ptr){
+    _syscall1(SYS_FREE,ptr);
+}

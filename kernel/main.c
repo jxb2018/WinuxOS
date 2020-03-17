@@ -31,9 +31,9 @@ int main(void){
     //put_char('\n');
     //struct task_struct* thread_start(char* name,int priority,thread_func function,void* func_arg){
     
-     thread_start("k_thread_a",32,k_thread_a,"A ");
+     //thread_start("k_thread_a",32,k_thread_a,"A ");
     //thread_start("k_thread_a",1,k1,"B  ");
-    //process_execute(u,"test_u"); //oxc0004a69
+    process_execute(u,"test_u"); //oxc0004a69
     //process_execute(u,"test_2");
      //ASSERT(1==2);
     intr_enable();
@@ -42,16 +42,38 @@ int main(void){
     return 0;
 }
 void k_thread_a(void* arg){
+    /*
     console_put_str("\nsys_malloc:");
     uint32_t* addr = sys_malloc(30);
     console_put_int((int)addr);put_char('\n');
-    addr = sys_malloc(30);
-    console_put_int((int)addr);put_char('\n');
+    addr = sys_malloc(63);
+    console_put_int((int)addr);put_char('\n');*/
+    console_put_str("\nk_thread_a:\n");
+    uint32_t* vaddr1 = sys_malloc(32);
+    uint32_t* vaddr = sys_malloc(32);
+    uint32_t* vaddr3 = sys_malloc(16);
+    console_put_int((uint32_t)vaddr);console_put_char('\n');
+    console_put_str("\bitmap:::::\n");console_put_int(*((uint8_t*)kernel_pool.pool_bitmap.bits));console_put_char('\n');
+    sys_free(vaddr);
+    console_put_str("\bitmap:::::\n");console_put_int(*((uint8_t*)kernel_pool.pool_bitmap.bits));console_put_char('\n');
+    sys_free(vaddr1);
+    while(1){
+    console_put_str("\bitmap:::::");console_put_int(*((uint8_t*)kernel_pool.pool_bitmap.bits));console_put_char('\n');
+    }
+    /*
+    
+    console_put_str("free success!");
+    vaddr = sys_malloc(1025);
+    console_put_int((uint32_t)vaddr);*/
     while(1);
 
 }
 void u(void){
-    printf("u_pid:%d   %d   %c %x %s\n",-10,10,'m',10,"helloo");
+    uint32_t* ptr = malloc(4);
+    printf("ptr = 0x%x\n",ptr);
+    //free(ptr);
+    ptr = malloc(4);
+    printf("ptr = 0x%x\n",ptr);
     while(1);
 
 }

@@ -20,9 +20,9 @@ void bitmap_set(struct bitmap* btmp,uint32_t bit_idx,uint8_t value){
     uint8_t byte_idx = bit_idx >> 3;
     uint8_t bit_remain = bit_idx % 8;
     if(value){
-         btmp->bits[byte_idx] |= (value << bit_remain); 
+         btmp->bits[byte_idx] |= (1 << bit_remain); 
     }else{
-         btmp->bits[byte_idx] &= (value << bit_remain); 
+         btmp->bits[byte_idx] &= (~(1 << bit_remain)); 
     }
 }
 //在位图中申请连续cnt个位，申请成功就返回其起始下标，失败就返回-1

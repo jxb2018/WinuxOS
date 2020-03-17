@@ -103,11 +103,6 @@ static void* vadder_get(enum pool_flags pf,uint32_t pg_cnt){
     return vaddr_start;
 }
 
-
-
-
-
-
 // 得到虚拟地址vaddr对应的pde指针
 uint32_t* get_pde_ptr(uint32_t vaddr){
     // 0xfffff00访问到表本身所在的地址
@@ -158,7 +153,7 @@ void* malloc_page(enum pool_flags pf,uint32_t pg_cnt){
     while(cnt--){
 
         void* page_phy = palloc(mem_pool);
-       // put_str("malloc_page: phy:");put_int((int)page_phy);put_str(" vaddr:");put_int((int)vaddr);put_char('\n');
+      // put_str("\nmalloc_page: phy:");put_int((int)page_phy);put_str(" vaddr:");put_int((int)vaddr);put_char('\n');
         if(page_phy == NULL){ //如何回滚
             return NULL;
         }
@@ -329,6 +324,86 @@ void* sys_malloc(uint32_t size) {
       lock_release(&mem_pool->lock);
       return (void*)b;
    }
+}
+
+//从物理地址池释放虚拟地址 将位图中对应的位置置零
+void pfree(uint32_t pg_phy_addr){ 
+    uint32_t bit_idx = 0;
+    struct task_struct* cur_thread = running_thread();
+    struct pool* mem_pool = (cur_thread->pgdir==NULL)?&kernel_pool:&user_pool;
+    bit_idx = (pg_phy_addr - (mem_pool->phy_address_start))/PG_SIZE;  
+    bitmap_set(&mem_pool->pool_bitmap,bit_idx,0);
+}
+
+//在虚拟地址池中释放以 _vaddr起始的连续pg_cnt个虚拟页地址
+void vaddr_remove(enum pool_flags pf,void* _vaddr,uint32_t pg_cnt){
+    struct virtual_addr* v_mem_pool = (pf == POOL_FLAG_KERNEL)?&kernel_vaddr:&running_thread()->userprog_vadder;
+    uint32_t bit_idx_start = ((uint32_t)_vaddr - v_mem_pool->vaddr_start)/PG_SIZE;
+    while(pg_cnt--){
+        bitmap_set(&v_mem_pool->vaddr_bitmap,pg_cnt+bit_idx_start,0);
+    }  
+}
+
+//去掉页表中虚拟地址vaddr的映射
+void page_table_pte_remove(uint32_t vaddr){
+    *(get_pte_ptr(vaddr)) &= 0xfffffffe; //p位置0
+    asm volatile("invlpg %0"::"m"(vaddr):"memory"); //更新快表 tlb
+}
+//释放以虚拟地址vaddr为起始地址的cnt个物理页框
+void mfree_page(enum pool_flags pf,void* _vaddr,uint32_t pg_cnt){
+    uint32_t cnt = 0,pg_phy_addr,vaddr;
+    uint32_t* pte;
+    vaddr = (uint32_t)_vaddr;
+    while(cnt<pg_cnt){
+        //1. 释放物理页
+        pte = get_pte_ptr(vaddr);
+        pg_phy_addr = *(pte) & 0xfffff000;
+        pfree(pg_phy_addr);
+        //2. 去掉映射
+        page_table_pte_remove(vaddr);
+        vaddr += PG_SIZE;
+        cnt++;
+    }
+    //3. 释放连续的虚拟页
+    vaddr_remove(pf,_vaddr,pg_cnt);
+}
+//回收内存ptr
+void sys_free(void* ptr){
+    ASSERT(ptr != NULL);
+    enum pool_flags PF;
+    uint32_t block_idx;
+    struct pool* mem_pool;
+    if(running_thread()->pgdir == NULL){ //内核
+        PF = POOL_FLAG_KERNEL;
+        mem_pool = &kernel_pool;
+    }else{ //用户
+        PF = POOL_FLAG_USER;
+        mem_pool = &user_pool;
+    }
+    lock_acquire(&mem_pool->lock);
+
+    //获得ptr所指mem_block的类型
+    struct mem_block* b = (struct mem_block*)ptr;
+    struct arena* a = block2arena(b); 
+
+
+    if(a->desc == NULL && a->large == true){ //大于1024的内存块
+        
+        mfree_page(PF,ptr,a->cnt);
+    }else{
+        //插入到相应的free_list中
+        list_append(&a->desc->free_list,&b->free_elem);
+        a->cnt++;
+        //如果arena中的内存块都是空闲的，就释放arena
+        if(a->cnt == a->desc->blocks_pre_arena){
+            for(block_idx = 0; block_idx < a->desc->blocks_pre_arena;block_idx++){
+                b = arena2block(a,block_idx);
+                list_remove(&b->free_elem);
+            }
+            mfree_page(PF,a,1);
+        }
+    }
+    lock_release(&mem_pool->lock);
 }
 
 

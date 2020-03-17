@@ -59,4 +59,11 @@ struct arena{
 void block_desc_init(struct mem_block_desc* desc_array);
 void* sys_malloc(uint32_t size);
 #define DESC_CNT 7  //构建7种规格的内存块描述符 16 32 64 128 256 512 1024
+
+void pfree(uint32_t pg_phy_addr);
+void vaddr_remove(enum pool_flags pf,void* _vaddr,uint32_t pg_cnt);
+void page_table_pte_remove(uint32_t vaddr);
+void mfree_page(enum pool_flags pf,void* _vaddr,uint32_t pg_cnt);
+void sys_free(void* ptr);
+
 #endif
