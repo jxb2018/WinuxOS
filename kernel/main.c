@@ -13,6 +13,7 @@
 #include "/home/jxb/OS/lib/stdio.h"
 void k1(void* arg);
 void u(void);
+void u1(void);
 void k_thread_a(void*);
 int prog_a_pid;
 int main(void){
@@ -33,10 +34,11 @@ int main(void){
     
      //thread_start("k_thread_a",32,k_thread_a,"A ");
     //thread_start("k_thread_a",1,k1,"B  ");
-    process_execute(u,"test_u"); //oxc0004a69
-    //process_execute(u,"test_2");
+    //process_execute(u,"test_u"); //oxc0004a69
+    //process_execute(u1,"test_2");
      //ASSERT(1==2);
-    intr_enable();
+    //intr_enable();
+    
     //prog_a_pid = getpid(); //c0004bb8
     while(1);
     return 0;
@@ -70,10 +72,16 @@ void k_thread_a(void* arg){
 }
 void u(void){
     uint32_t* ptr = malloc(4);
-    printf("ptr = 0x%x\n",ptr);
+    *ptr = 10;
+    printf("value:%d\n",*ptr);
+    free(ptr);
+    while(1);
+
+}
+void u1(void){
+    uint32_t* ptr = malloc(4);
+    printf("ptr1 = 0x%x\n",ptr);
     //free(ptr);
-    ptr = malloc(4);
-    printf("ptr = 0x%x\n",ptr);
     while(1);
 
 }

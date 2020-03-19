@@ -13,6 +13,7 @@
 #define PG_SIZE 4096
 extern void switch_to(struct task_struct*,struct task_struct*);
 struct task_struct* main_thread;//主线程PCB
+struct task_struct* idle_thread;// 懒惰  系统空闲时运行的线程
 struct lock pid_lock;
 static pid_t next_pid = 0;
 list thread_ready_list;//
@@ -97,10 +98,21 @@ void thread_create(struct task_struct* pthread,thread_func function,void* func_a
     kthread_stack->edi = \
     kthread_stack->esi = 0;
 }
+//系统空闲时运行的线程
+void idle(){
+    while(1){
+        thread_block(TASK_BLOCKED); 
+        asm volatile ("sti; hlt" : : : "memory");
+           // hlt指令让处理器停止执行指令
+    }  
+}
+
+
 
 // 实现任务调度
 void schedule(void){
-    ASSERT(intr_get_status() == INTR_OFF);
+    //ASSERT(intr_get_status() == INTR_OFF);
+    intr_disable();
     struct task_struct* cur = running_thread();
     if(cur->status == TASK_RUNNING){
         ASSERT(!elem_find(&thread_ready_list,&cur->general_tag));
@@ -110,12 +122,28 @@ void schedule(void){
     }else{
         ;
     }
-    ASSERT(!list_empty(&thread_ready_list));
+    //ASSERT(!list_empty(&thread_ready_list));
+    if(list_empty(&thread_ready_list)){
+        thread_unblock(idle_thread); //如果就绪队列没有可以运行的任务，就唤醒idle
+                                        //唤醒之后，返回schedule()结束，之后执行thread_block()的最后一条语句
+                                        //之后，执行 idle中的 asm,cpu 停机
+    }
     thread_tag = list_pop(&thread_ready_list);
     struct task_struct* next = elem2entry(struct task_struct,general_tag,thread_tag);
     next->status = TASK_RUNNING;
     process_activate(next); //激活页表
     switch_to(cur,next);
+}
+
+//主动让出cpu，让其他线程运行
+void thread_yield(void){
+    struct task_struct* cur_thread = running_thread();
+    enum intr_status old_intr_status = intr_disable();
+    cur_thread->status = TASK_READY;
+    ASSERT(!elem_find(&thread_ready_list,&cur_thread->general_tag));
+    list_append(&thread_ready_list,&cur_thread->general_tag);
+    schedule();
+    intr_set_status(old_intr_status);
 }
 
 void thread_init(void){
@@ -124,6 +152,8 @@ void thread_init(void){
     list_init(&thread_all_list);
     lock_init(&pid_lock);
     make_main_thread();
+    //创建idle线程
+    idle_thread = thread_start("idle",10,idle,NULL);
     put_str("thread_init done\n");
 }
 //线程阻塞
@@ -131,7 +161,7 @@ void thread_block(enum task_status status){
     ASSERT((status == TASK_BLOCKED)||(status == TASK_WAITING)||(status == TASK_HANGING));
     enum intr_status old_intr_status = intr_disable();
     struct task_struct* cur = running_thread();
-    cur->status = TASK_BLOCKED;
+    cur->status = status;
     schedule();
     intr_set_status(old_intr_status);
 }

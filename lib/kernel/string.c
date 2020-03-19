@@ -3,6 +3,15 @@
 #include "debug.h"
 #include "stdint.h"
 
+//将src中len对相邻字节交换位置，存入buf中
+void swap_pairs_bytes(const char* src,char* buf,uint32_t len){
+    uint32_t idx ;
+    for(idx = 0; idx <len ;idx += 2){
+        buf[idx + 1] = *(src++);
+        buf[idx]     = *(src++);
+    }
+    buf[idx] = '\0';
+}
 // 将dst_起始的size个字节置为value
 void memset(void* dst_,uint8_t value,uint32_t size){
     ASSERT(dst_ != NULL);

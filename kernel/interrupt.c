@@ -80,8 +80,8 @@ static void pic_init(void){
     outb(PIC_S_ICW_234_OCW_1,0xff);
     */
 
-    outb(PIC_M_ICW_234_OCW_1,0xfc); //主片打开 时钟、键盘中断
-    outb(PIC_S_ICW_234_OCW_1,0xff);//屏蔽从片上的所有中断，所以值为 Oxff
+    outb(PIC_M_ICW_234_OCW_1,0xf8); //主片打开 时钟、键盘中断
+    outb(PIC_S_ICW_234_OCW_1,0x3f);//屏蔽从片上的所有中断，所以值为 Oxff
     put_str("pic_init done\n");
 
 

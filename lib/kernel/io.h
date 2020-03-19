@@ -10,6 +10,7 @@ static inline uint8_t inb(uint16_t port){
 //从端口port读入的word_cnt个字写入addr
 static inline void insw(uint16_t port,const void *addr,uint32_t word_cnt){
     asm volatile("cld;rep insw":"+D"(addr),"+c"(word_cnt):"d"(port):"memory");
+    // 功  能: 从DX指出的外设端口输入一个字节或字到由ES: DI指定的存储器中。 
 }
 //向端口port写入一个字节
 static inline void outb(uint16_t port,uint8_t data){

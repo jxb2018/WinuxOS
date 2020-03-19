@@ -8,6 +8,7 @@
 #include "/home/jxb/OS/device/keyboard.h"
 #include "/home/jxb/OS/userprog/tss.h"
 #include "/home/jxb/OS/userprog/syscall_init.h"
+#include "/home/jxb/OS/device/ide.h"
 void init_all(){
     put_str("init_all start\n");
     idt_init();
@@ -18,6 +19,7 @@ void init_all(){
     keyboard_init();
     tss_init();
     syscall_init();
+    ide_int();
     put_str("init_all done\n");
 
 }

@@ -67,3 +67,11 @@ uint32_t printf(const char* format,...){
     vsprintf(buf,format,args);
     return write(buf);
 }
+
+/* 同printf不同的地方就是字符串不是写到终端,而是写到buf中 */
+uint32_t sprintf(char* buf, const char* format, ...) {
+   va_list args = (va_list)&format;  //args 指向 format
+   uint32_t retval;
+   retval = vsprintf(buf, format, args);
+   return retval;
+}

@@ -2,14 +2,14 @@
 section .text 
 global switch_to
 switch_to:
-    ;next 
-    ;cur
-    ;shedule的返回地址
+    ;next                |
+    ;cur                 |
+    ;shedule的返回地址     V
     push esi
     push edi 
     push ebx 
     push ebp
-    mov eax,[esp+20] ;cur 
+    mov eax,[esp+20] ;cur的self_kstart地址
     mov [eax],esp ;self_kstart
 
     ;-------------------备份当前线程，恢复下个线程------------------
