@@ -5,7 +5,7 @@
 #include "/home/jxb/OS/lib/kernel/memory.h"
 //定义通用函数模型
 typedef void thread_func(void*);   //为拥有参数void*,返回值是void的函数起了一个别名 thread_func
-
+#define MAX_FILES_OPEN_PER_PROC 8 //每个任务可打开的文件数
 /* 进程或线程的状态 */
 enum task_status {
    TASK_RUNNING,
@@ -62,11 +62,13 @@ struct task_struct{
    char name[16];
    uint8_t ticks;//每次在处理器上执行时间的滴答数
    uint32_t elapsed_ticks;//从运行开始，占用了多少个cpu滴答数
+   int32_t fd_table[MAX_FILES_OPEN_PER_PROC]; //文件描述符数组
    list_elem general_tag;
    list_elem all_list_tag;
    uint32_t* pgdir;//进程自己页表的虚拟地址
    struct virtual_addr userprog_vadder;//用户进程的虚拟地址池
    struct mem_block_desc u_block_descs[DESC_CNT]; //用户进程内存块描述符
+   uint32_t cwd_inode_nr;	 // 进程所在的工作目录的inode编号
    uint32_t stack_magic;//栈的边界标记，用于检测栈的溢出
 };
 /*

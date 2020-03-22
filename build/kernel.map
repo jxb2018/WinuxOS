@@ -3,21 +3,24 @@
 公共符号            大小              文件
 
 prog_a_pid          0x4               /home/jxb/OS/build/main.o
+root_dir            0x208             /home/jxb/OS/build/dir.o
 thread_ready_list   0x10              /home/jxb/OS/build/thread.o
 thread_all_list     0x10              /home/jxb/OS/build/thread.o
 user_pool           0x2c              /home/jxb/OS/build/memory.o
-channel_cnt         0x1               /home/jxb/OS/build/ide.o
+channel_cnt         0x1               /home/jxb/OS/build/main.o
+cur_part            0x4               /home/jxb/OS/build/fs.o
 k_block_descs       0xa8              /home/jxb/OS/build/memory.o
 idle_thread         0x4               /home/jxb/OS/build/thread.o
 intr_name           0x204             /home/jxb/OS/build/interrupt.o
 main_thread         0x4               /home/jxb/OS/build/thread.o
-channels            0xcc0             /home/jxb/OS/build/ide.o
+channels            0xcc0             /home/jxb/OS/build/main.o
 ticks               0x4               /home/jxb/OS/build/timer.o
 kdb_buf             0x6c              /home/jxb/OS/build/keyboard.o
 kernel_vaddr        0xc               /home/jxb/OS/build/memory.o
 syscall_table       0x80              /home/jxb/OS/build/init.o
 idt_table           0x204             /home/jxb/OS/build/interrupt.o
-partition_list      0x10              /home/jxb/OS/build/ide.o
+file_table          0x180             /home/jxb/OS/build/file.o
+partition_list      0x10              /home/jxb/OS/build/main.o
 kernel_pool         0x2c              /home/jxb/OS/build/memory.o
 pid_lock            0x1c              /home/jxb/OS/build/thread.o
 
@@ -167,6 +170,35 @@ pid_lock            0x1c              /home/jxb/OS/build/thread.o
                 0x0000000000000000        0x4 /home/jxb/OS/build/ide.o
  .note.GNU-stack
                 0x0000000000000000        0x0 /home/jxb/OS/build/ide.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/fs.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/fs.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/fs.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/inode.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/inode.o
+ .text.__x86.get_pc_thunk.ax
+                0x0000000000000000        0x4 /home/jxb/OS/build/inode.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/inode.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/inode.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/file.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/file.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/file.o
+ .text.__x86.get_pc_thunk.ax
+                0x0000000000000000        0x4 /home/jxb/OS/build/file.o
+ .text.__x86.get_pc_thunk.dx
+                0x0000000000000000        0x4 /home/jxb/OS/build/file.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/file.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/file.o
+ .group         0x0000000000000000        0x8 /home/jxb/OS/build/dir.o
+ .text.__x86.get_pc_thunk.bx
+                0x0000000000000000        0x4 /home/jxb/OS/build/dir.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /home/jxb/OS/build/dir.o
 
 内存配置
 
@@ -200,6 +232,10 @@ LOAD /home/jxb/OS/build/syscall.o
 LOAD /home/jxb/OS/build/stdio.o
 LOAD /home/jxb/OS/build/stdio_kernel.o
 LOAD /home/jxb/OS/build/ide.o
+LOAD /home/jxb/OS/build/fs.o
+LOAD /home/jxb/OS/build/inode.o
+LOAD /home/jxb/OS/build/file.o
+LOAD /home/jxb/OS/build/dir.o
                 [!provide]                        PROVIDE (__executable_start = SEGMENT_START ("text-segment", 0x8048000))
                 0x00000000080480d4                . = (SEGMENT_START ("text-segment", 0x8048000) + SIZEOF_HEADERS)
 
@@ -269,173 +305,203 @@ LOAD /home/jxb/OS/build/ide.o
 .plt.sec
  *(.plt.sec)
 
-.text           0x00000000c0001500     0x51dc
+.text           0x00000000c0001500     0x7c42
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
  *(.text.hot .text.hot.*)
  *(.text .stub .text.* .gnu.linkonce.t.*)
- .text          0x00000000c0001500      0x237 /home/jxb/OS/build/main.o
+ .text          0x00000000c0001500      0x2df /home/jxb/OS/build/main.o
                 0x00000000c0001500                main
-                0x00000000c0001533                k_thread_a
-                0x00000000c000166f                u
-                0x00000000c00016c2                u1
-                0x00000000c00016fb                k1
+                0x00000000c00015db                k_thread_a
+                0x00000000c0001717                u
+                0x00000000c000176a                u1
+                0x00000000c00017a3                k1
  .text.__x86.get_pc_thunk.bx
-                0x00000000c0001737        0x4 /home/jxb/OS/build/main.o
-                0x00000000c0001737                __x86.get_pc_thunk.bx
- .text          0x00000000c000173b       0x69 /home/jxb/OS/build/init.o
-                0x00000000c000173b                init_all
- .text          0x00000000c00017a4      0x578 /home/jxb/OS/build/interrupt.o
-                0x00000000c00017cf                idt_init
-                0x00000000c0001c45                intr_get_status
-                0x00000000c0001c6c                intr_enable
-                0x00000000c0001c9d                intr_disable
-                0x00000000c0001cce                register_handler
-                0x00000000c0001cf7                intr_set_status
+                0x00000000c00017df        0x4 /home/jxb/OS/build/main.o
+                0x00000000c00017df                __x86.get_pc_thunk.bx
+ .text          0x00000000c00017e3       0x6e /home/jxb/OS/build/init.o
+                0x00000000c00017e3                init_all
+ .text          0x00000000c0001851      0x578 /home/jxb/OS/build/interrupt.o
+                0x00000000c000187c                idt_init
+                0x00000000c0001cf2                intr_get_status
+                0x00000000c0001d19                intr_enable
+                0x00000000c0001d4a                intr_disable
+                0x00000000c0001d7b                register_handler
+                0x00000000c0001da4                intr_set_status
  .text.__x86.get_pc_thunk.ax
-                0x00000000c0001d1c        0x4 /home/jxb/OS/build/interrupt.o
-                0x00000000c0001d1c                __x86.get_pc_thunk.ax
- .text          0x00000000c0001d20      0x17f /home/jxb/OS/build/timer.o
-                0x00000000c0001dde                time_init
-                0x00000000c0001e2e                ticks_to_sleep
-                0x00000000c0001e69                mtime_sleep
- *fill*         0x00000000c0001e9f        0x1 
- .text          0x00000000c0001ea0      0x55b /home/jxb/OS/build/kernel.o
-                0x00000000c0001ea0                intr_exit
-                0x00000000c00023d7                syscall_handler
- *fill*         0x00000000c00023fb        0x5 
- .text          0x00000000c0002400      0x176 /home/jxb/OS/build/print.o
-                0x00000000c0002400                put_int
-                0x00000000c0002468                put_str
-                0x00000000c0002486                put_char
-                0x00000000c000254f                set_cursor
- .text          0x00000000c0002576       0xf4 /home/jxb/OS/build/debug.o
-                0x00000000c0002576                panic_spin
- .text          0x00000000c000266a      0x51a /home/jxb/OS/build/string.o
-                0x00000000c000266a                swap_pairs_bytes
-                0x00000000c00026cc                memset
-                0x00000000c0002734                memcpy
-                0x00000000c00027aa                memcmp
-                0x00000000c0002843                strcpy
-                0x00000000c00028ae                strlen
-                0x00000000c0002908                strcmp
-                0x00000000c000299c                strchr
-                0x00000000c0002a0a                strrchr
-                0x00000000c0002a92                strcat
-                0x00000000c0002b12                strchrs
- .text          0x00000000c0002b84      0xfe3 /home/jxb/OS/build/memory.o
-                0x00000000c0002f23                get_pde_ptr
-                0x00000000c0002f40                get_pte_ptr
-                0x00000000c00030cf                malloc_page
-                0x00000000c000319b                get_kernel_page
-                0x00000000c000320f                get_user_page
-                0x00000000c0003283                get_a_page
-                0x00000000c00033e2                addr_v2p
-                0x00000000c0003418                block_desc_init
-                0x00000000c00034f6                sys_malloc
-                0x00000000c00037f6                pfree
-                0x00000000c000385f                vaddr_remove
-                0x00000000c00038cc                page_table_pte_remove
-                0x00000000c00038f3                mfree_page
-                0x00000000c0003973                sys_free
-                0x00000000c0003ad6                mem_init
- .text          0x00000000c0003b67      0x238 /home/jxb/OS/build/bitmap.o
-                0x00000000c0003b67                bitmap_init
-                0x00000000c0003b9a                bitmap_scan_test
-                0x00000000c0003be5                bitmap_set
-                0x00000000c0003cb3                bitmap_scan
- .text          0x00000000c0003d9f      0x6ef /home/jxb/OS/build/thread.o
-                0x00000000c0003dcb                running_thread
-                0x00000000c0003dea                thread_start
-                0x00000000c0003f9b                init_thread
-                0x00000000c0004054                thread_create
-                0x00000000c00040d8                idle
-                0x00000000c00040f9                schedule
-                0x00000000c000420b                thread_yield
-                0x00000000c00042a8                thread_init
-                0x00000000c0004343                thread_block
-                0x00000000c00043bb                thread_unblock
+                0x00000000c0001dc9        0x4 /home/jxb/OS/build/interrupt.o
+                0x00000000c0001dc9                __x86.get_pc_thunk.ax
+ .text          0x00000000c0001dcd      0x17f /home/jxb/OS/build/timer.o
+                0x00000000c0001e8b                time_init
+                0x00000000c0001edb                ticks_to_sleep
+                0x00000000c0001f16                mtime_sleep
+ *fill*         0x00000000c0001f4c        0x4 
+ .text          0x00000000c0001f50      0x55b /home/jxb/OS/build/kernel.o
+                0x00000000c0001f50                intr_exit
+                0x00000000c0002487                syscall_handler
+ *fill*         0x00000000c00024ab        0x5 
+ .text          0x00000000c00024b0      0x176 /home/jxb/OS/build/print.o
+                0x00000000c00024b0                put_int
+                0x00000000c0002518                put_str
+                0x00000000c0002536                put_char
+                0x00000000c00025ff                set_cursor
+ .text          0x00000000c0002626       0xd6 /home/jxb/OS/build/debug.o
+                0x00000000c0002626                panic_spin
+ .text          0x00000000c00026fc      0x51a /home/jxb/OS/build/string.o
+                0x00000000c00026fc                swap_pairs_bytes
+                0x00000000c000275e                memset
+                0x00000000c00027c6                memcpy
+                0x00000000c000283c                memcmp
+                0x00000000c00028d5                strcpy
+                0x00000000c0002940                strlen
+                0x00000000c000299a                strcmp
+                0x00000000c0002a2e                strchr
+                0x00000000c0002a9c                strrchr
+                0x00000000c0002b24                strcat
+                0x00000000c0002ba4                strchrs
+ .text          0x00000000c0002c16     0x1065 /home/jxb/OS/build/memory.o
+                0x00000000c0002fb5                get_pde_ptr
+                0x00000000c0002fd2                get_pte_ptr
+                0x00000000c0003161                malloc_page
+                0x00000000c000322d                get_kernel_page
+                0x00000000c00032a1                get_user_page
+                0x00000000c0003315                get_a_page
+                0x00000000c0003474                addr_v2p
+                0x00000000c00034aa                block_desc_init
+                0x00000000c0003588                sys_malloc
+                0x00000000c000390a                pfree
+                0x00000000c0003973                vaddr_remove
+                0x00000000c00039e0                page_table_pte_remove
+                0x00000000c0003a07                mfree_page
+                0x00000000c0003a87                sys_free
+                0x00000000c0003bea                mem_init
+ .text          0x00000000c0003c7b      0x294 /home/jxb/OS/build/bitmap.o
+                0x00000000c0003c7b                bitmap_init
+                0x00000000c0003cae                bitmap_scan_test
+                0x00000000c0003cf9                bitmap_set
+                0x00000000c0003dc7                bitmap_scan
+ .text          0x00000000c0003f0f      0x738 /home/jxb/OS/build/thread.o
+                0x00000000c0003f3b                running_thread
+                0x00000000c0003f5a                thread_start
+                0x00000000c000410b                init_thread
+                0x00000000c000420a                thread_create
+                0x00000000c000428e                idle
+                0x00000000c00042af                schedule
+                0x00000000c00043c4                thread_yield
+                0x00000000c0004461                thread_init
+                0x00000000c00044fc                thread_block
+                0x00000000c0004574                thread_unblock
  .text.__x86.get_pc_thunk.dx
-                0x00000000c000448e        0x4 /home/jxb/OS/build/thread.o
-                0x00000000c000448e                __x86.get_pc_thunk.dx
- .text          0x00000000c0004492      0x25c /home/jxb/OS/build/list.o
-                0x00000000c0004492                list_init
-                0x00000000c00044ca                list_insert_before
-                0x00000000c000451e                list_push
-                0x00000000c0004546                list_append
-                0x00000000c000456e                list_remove
-                0x00000000c00045b7                list_pop
-                0x00000000c00045e3                elem_find
-                0x00000000c0004628                list_len
-                0x00000000c0004667                list_traversal
-                0x00000000c00046cb                list_empty
- *fill*         0x00000000c00046ee        0x2 
- .text          0x00000000c00046f0       0x15 /home/jxb/OS/build/switch.o
-                0x00000000c00046f0                switch_to
- .text          0x00000000c0004705      0x119 /home/jxb/OS/build/console.o
-                0x00000000c0004705                console_init
-                0x00000000c0004730                console_acquire
-                0x00000000c000475b                console_release
-                0x00000000c0004786                console_put_str
-                0x00000000c00047b6                console_put_char
-                0x00000000c00047ee                console_put_int
- .text          0x00000000c000481e      0x2ea /home/jxb/OS/build/sync.o
-                0x00000000c000481e                sema_init
-                0x00000000c0004858                lock_init
-                0x00000000c0004892                sema_down
-                0x00000000c000492b                sema_up
-                0x00000000c00049f5                lock_acquire
-                0x00000000c0004a54                lock_release
- .text          0x00000000c0004b08      0x2aa /home/jxb/OS/build/keyboard.o
-                0x00000000c0004d74                keyboard_init
- .text          0x00000000c0004db2      0x291 /home/jxb/OS/build/ioqueue.o
-                0x00000000c0004db2                ioq_init
-                0x00000000c0004e06                ioq_empty
-                0x00000000c0004e29                ioq_full
-                0x00000000c0004e62                ioq_wait
-                0x00000000c0004ebb                wakeup
-                0x00000000c0004eee                ioq_getchar
-                0x00000000c0004f97                ioq_putchar
- .text          0x00000000c0005043      0x1b2 /home/jxb/OS/build/tss.o
-                0x00000000c0005043                update_tss_esp
-                0x00000000c0005062                make_gdt_desc
-                0x00000000c00050d4                tss_init
- .text          0x00000000c00051f5      0x35c /home/jxb/OS/build/process.o
-                0x00000000c00051f5                start_process
-                0x00000000c000530b                page_dir_activate
-                0x00000000c0005350                process_activate
-                0x00000000c00053b3                create_page_dir
-                0x00000000c000542a                create_user_vaddr_bitmap
-                0x00000000c0005489                process_execute
- .text          0x00000000c0005551       0xcd /home/jxb/OS/build/syscall_init.o
-                0x00000000c0005551                sys_getpid
-                0x00000000c0005574                sys_write
-                0x00000000c00055a7                syscall_init
- .text          0x00000000c000561e       0x98 /home/jxb/OS/build/syscall.o
-                0x00000000c000561e                getpid
-                0x00000000c000563d                write
-                0x00000000c0005666                malloc
-                0x00000000c000568f                free
- .text          0x00000000c00056b6      0x2b7 /home/jxb/OS/build/stdio.o
-                0x00000000c0005747                vsprintf
-                0x00000000c00058d8                printf
-                0x00000000c000593a                sprintf
- .text          0x00000000c000596d       0x63 /home/jxb/OS/build/stdio_kernel.o
-                0x00000000c000596d                printk
- .text          0x00000000c00059d0      0xd0c /home/jxb/OS/build/ide.o
-                0x00000000c0005aa0                select_disk
-                0x00000000c0005ae4                select_sector
-                0x00000000c0005bbc                cmd_out
-                0x00000000c0005c44                write2sector
-                0x00000000c0005c8e                busy_wait
-                0x00000000c0005d08                ide_read
-                0x00000000c0005e64                ide_write
-                0x00000000c0005f9d                intr_hd_handler
-                0x00000000c000601a                identify_disk
-                0x00000000c00061d6                partition_scan
-                0x00000000c0006488                partition_info
-                0x00000000c00064cb                ide_int
+                0x00000000c0004647        0x4 /home/jxb/OS/build/thread.o
+                0x00000000c0004647                __x86.get_pc_thunk.dx
+ .text          0x00000000c000464b      0x25c /home/jxb/OS/build/list.o
+                0x00000000c000464b                list_init
+                0x00000000c0004683                list_insert_before
+                0x00000000c00046d7                list_push
+                0x00000000c00046ff                list_append
+                0x00000000c0004727                list_remove
+                0x00000000c0004770                list_pop
+                0x00000000c000479c                elem_find
+                0x00000000c00047e1                list_empty
+                0x00000000c0004804                list_len
+                0x00000000c0004843                list_traversal
+ *fill*         0x00000000c00048a7        0x9 
+ .text          0x00000000c00048b0       0x15 /home/jxb/OS/build/switch.o
+                0x00000000c00048b0                switch_to
+ .text          0x00000000c00048c5      0x119 /home/jxb/OS/build/console.o
+                0x00000000c00048c5                console_init
+                0x00000000c00048f0                console_acquire
+                0x00000000c000491b                console_release
+                0x00000000c0004946                console_put_str
+                0x00000000c0004976                console_put_char
+                0x00000000c00049ae                console_put_int
+ .text          0x00000000c00049de      0x2ea /home/jxb/OS/build/sync.o
+                0x00000000c00049de                sema_init
+                0x00000000c0004a18                lock_init
+                0x00000000c0004a52                sema_down
+                0x00000000c0004aeb                sema_up
+                0x00000000c0004bb5                lock_acquire
+                0x00000000c0004c14                lock_release
+ .text          0x00000000c0004cc8      0x2aa /home/jxb/OS/build/keyboard.o
+                0x00000000c0004f34                keyboard_init
+ .text          0x00000000c0004f72      0x291 /home/jxb/OS/build/ioqueue.o
+                0x00000000c0004f72                ioq_init
+                0x00000000c0004fc6                ioq_empty
+                0x00000000c0004fe9                ioq_full
+                0x00000000c0005022                ioq_wait
+                0x00000000c000507b                wakeup
+                0x00000000c00050ae                ioq_getchar
+                0x00000000c0005157                ioq_putchar
+ .text          0x00000000c0005203      0x1b2 /home/jxb/OS/build/tss.o
+                0x00000000c0005203                update_tss_esp
+                0x00000000c0005222                make_gdt_desc
+                0x00000000c0005294                tss_init
+ .text          0x00000000c00053b5      0x35c /home/jxb/OS/build/process.o
+                0x00000000c00053b5                start_process
+                0x00000000c00054cb                page_dir_activate
+                0x00000000c0005510                process_activate
+                0x00000000c0005573                create_page_dir
+                0x00000000c00055ea                create_user_vaddr_bitmap
+                0x00000000c0005649                process_execute
+ .text          0x00000000c0005711       0x9a /home/jxb/OS/build/syscall_init.o
+                0x00000000c0005711                sys_getpid
+                0x00000000c0005734                syscall_init
+ .text          0x00000000c00057ab       0x9c /home/jxb/OS/build/syscall.o
+                0x00000000c00057ab                getpid
+                0x00000000c00057ca                write
+                0x00000000c00057f7                malloc
+                0x00000000c0005820                free
+ .text          0x00000000c0005847      0x2cc /home/jxb/OS/build/stdio.o
+                0x00000000c00058d8                vsprintf
+                0x00000000c0005a69                printf
+                0x00000000c0005ae0                sprintf
+ .text          0x00000000c0005b13       0x63 /home/jxb/OS/build/stdio_kernel.o
+                0x00000000c0005b13                printk
+ .text          0x00000000c0005b76      0xd26 /home/jxb/OS/build/ide.o
+                0x00000000c0005c46                select_disk
+                0x00000000c0005c8a                select_sector
+                0x00000000c0005d62                cmd_out
+                0x00000000c0005da0                read_from_sector
+                0x00000000c0005dea                write2sector
+                0x00000000c0005e34                busy_wait
+                0x00000000c0005eae                ide_read
+                0x00000000c000600a                ide_write
+                0x00000000c000614e                intr_hd_handler
+                0x00000000c00061cb                identify_disk
+                0x00000000c0006387                partition_scan
+                0x00000000c0006648                partition_info
+                0x00000000c000668b                ide_int
+ .text          0x00000000c000689c     0x10f8 /home/jxb/OS/build/fs.o
+                0x00000000c000689c                mount_partition
+                0x00000000c0006b29                partition_format
+                0x00000000c0007064                search_file
+                0x00000000c000727b                file_create
+                0x00000000c000749b                sys_open
+                0x00000000c000756f                fd_local2global
+                0x00000000c00075cf                sys_write
+                0x00000000c00076cd                sys_read
+                0x00000000c0007763                filesys_init
+ .text          0x00000000c0007994      0x473 /home/jxb/OS/build/inode.o
+                0x00000000c0007a02                inode_sync
+                0x00000000c0007b01                inode_open
+                0x00000000c0007c53                inode_close
+                0x00000000c0007cde                inode_delete
+                0x00000000c0007da7                inode_init
+ .text          0x00000000c0007e07     0x1001 /home/jxb/OS/build/file.o
+                0x00000000c0007e07                get_free_slot_in_global
+                0x00000000c0007e75                pcb_fd_install
+                0x00000000c0007ef3                inode_bitmap_alloc
+                0x00000000c0007f49                block_bitmap_alloc
+                0x00000000c0007faa                bitmap_sync
+                0x00000000c000803b                file_open
+                0x00000000c0008178                file_close
+                0x00000000c00081cb                file_write
+                0x00000000c00089ed                file_read
+ .text          0x00000000c0008e08      0x33a /home/jxb/OS/build/dir.o
+                0x00000000c0008e08                open_root_dir
+                0x00000000c0008e4f                create_dir_entry
+                0x00000000c0008ea3                sync_dir_entry
  *(.gnu.warning)
 
 .fini
@@ -443,34 +509,38 @@ LOAD /home/jxb/OS/build/ide.o
                 [!provide]                        PROVIDE (__etext = .)
                 [!provide]                        PROVIDE (_etext = .)
                 [!provide]                        PROVIDE (etext = .)
-                0x00000000c0007000                . = ALIGN (CONSTANT (MAXPAGESIZE))
-                0x00000000c0007000                . = SEGMENT_START ("rodata-segment", (ALIGN (CONSTANT (MAXPAGESIZE)) + (. & (CONSTANT (MAXPAGESIZE) - 0x1))))
+                0x00000000c000a000                . = ALIGN (CONSTANT (MAXPAGESIZE))
+                0x00000000c000a000                . = SEGMENT_START ("rodata-segment", (ALIGN (CONSTANT (MAXPAGESIZE)) + (. & (CONSTANT (MAXPAGESIZE) - 0x1))))
 
-.rodata         0x00000000c0007000      0xbd7
+.rodata         0x00000000c000a000     0x15b5
  *(.rodata .rodata.* .gnu.linkonce.r.*)
- .rodata        0x00000000c0007000       0x4b /home/jxb/OS/build/main.o
- .rodata        0x00000000c000704b       0x1f /home/jxb/OS/build/init.o
- *fill*         0x00000000c000706a        0x2 
- .rodata        0x00000000c000706c      0x2c2 /home/jxb/OS/build/interrupt.o
- *fill*         0x00000000c000732e        0x2 
- .rodata        0x00000000c0007330       0x45 /home/jxb/OS/build/timer.o
- .rodata        0x00000000c0007375       0x31 /home/jxb/OS/build/debug.o
- *fill*         0x00000000c00073a6        0x2 
- .rodata        0x00000000c00073a8      0x118 /home/jxb/OS/build/string.o
- .rodata        0x00000000c00074c0      0x1dd /home/jxb/OS/build/memory.o
- *fill*         0x00000000c000769d        0x3 
- .rodata        0x00000000c00076a0       0x3b /home/jxb/OS/build/bitmap.o
- *fill*         0x00000000c00076db        0x1 
- .rodata        0x00000000c00076dc      0x24f /home/jxb/OS/build/thread.o
- *fill*         0x00000000c000792b        0x1 
- .rodata        0x00000000c000792c       0x95 /home/jxb/OS/build/sync.o
- .rodata        0x00000000c00079c1        0xd /home/jxb/OS/build/keyboard.o
- *fill*         0x00000000c00079ce        0x2 
- .rodata        0x00000000c00079d0       0x2d /home/jxb/OS/build/ioqueue.o
- .rodata        0x00000000c00079fd       0x27 /home/jxb/OS/build/tss.o
- .rodata        0x00000000c0007a24       0x35 /home/jxb/OS/build/process.o
- .rodata        0x00000000c0007a59       0x27 /home/jxb/OS/build/syscall_init.o
- .rodata        0x00000000c0007a80      0x157 /home/jxb/OS/build/ide.o
+ .rodata        0x00000000c000a000       0x7d /home/jxb/OS/build/main.o
+ .rodata        0x00000000c000a07d       0x1f /home/jxb/OS/build/init.o
+ .rodata        0x00000000c000a09c      0x2c2 /home/jxb/OS/build/interrupt.o
+ *fill*         0x00000000c000a35e        0x2 
+ .rodata        0x00000000c000a360       0x49 /home/jxb/OS/build/timer.o
+ .rodata        0x00000000c000a3a9       0x34 /home/jxb/OS/build/debug.o
+ *fill*         0x00000000c000a3dd        0x3 
+ .rodata        0x00000000c000a3e0      0x118 /home/jxb/OS/build/string.o
+ .rodata        0x00000000c000a4f8      0x20d /home/jxb/OS/build/memory.o
+ *fill*         0x00000000c000a705        0x3 
+ .rodata        0x00000000c000a708       0x68 /home/jxb/OS/build/bitmap.o
+ .rodata        0x00000000c000a770      0x24f /home/jxb/OS/build/thread.o
+ *fill*         0x00000000c000a9bf        0x1 
+ .rodata        0x00000000c000a9c0       0x95 /home/jxb/OS/build/sync.o
+ .rodata        0x00000000c000aa55        0xd /home/jxb/OS/build/keyboard.o
+ *fill*         0x00000000c000aa62        0x2 
+ .rodata        0x00000000c000aa64       0x2d /home/jxb/OS/build/ioqueue.o
+ .rodata        0x00000000c000aa91       0x27 /home/jxb/OS/build/tss.o
+ .rodata        0x00000000c000aab8       0x35 /home/jxb/OS/build/process.o
+ .rodata        0x00000000c000aaed       0x27 /home/jxb/OS/build/syscall_init.o
+ .rodata        0x00000000c000ab14      0x157 /home/jxb/OS/build/ide.o
+ *fill*         0x00000000c000ac6b        0x1 
+ .rodata        0x00000000c000ac6c      0x539 /home/jxb/OS/build/fs.o
+ *fill*         0x00000000c000b1a5        0x3 
+ .rodata        0x00000000c000b1a8      0x3ca /home/jxb/OS/build/file.o
+ *fill*         0x00000000c000b572        0x2 
+ .rodata        0x00000000c000b574       0x41 /home/jxb/OS/build/dir.o
 
 .rodata1
  *(.rodata1)
@@ -479,49 +549,57 @@ LOAD /home/jxb/OS/build/ide.o
  *(.eh_frame_hdr)
  *(.eh_frame_entry .eh_frame_entry.*)
 
-.eh_frame       0x00000000c0007bd8     0x13cc
+.eh_frame       0x00000000c000b5b8     0x17a4
  *(.eh_frame)
- .eh_frame      0x00000000c0007bd8       0xc4 /home/jxb/OS/build/main.o
- .eh_frame      0x00000000c0007c9c       0x24 /home/jxb/OS/build/init.o
+ .eh_frame      0x00000000c000b5b8       0xc8 /home/jxb/OS/build/main.o
+ .eh_frame      0x00000000c000b680       0x24 /home/jxb/OS/build/init.o
                                          0x50 (松开之前的大小)
- .eh_frame      0x00000000c0007cc0      0x1b4 /home/jxb/OS/build/interrupt.o
+ .eh_frame      0x00000000c000b6a4      0x1b4 /home/jxb/OS/build/interrupt.o
                                         0x1e0 (松开之前的大小)
- .eh_frame      0x00000000c0007e74       0xac /home/jxb/OS/build/timer.o
+ .eh_frame      0x00000000c000b858       0xac /home/jxb/OS/build/timer.o
                                          0xec (松开之前的大小)
- .eh_frame      0x00000000c0007f20       0x1c /home/jxb/OS/build/debug.o
+ .eh_frame      0x00000000c000b904       0x1c /home/jxb/OS/build/debug.o
                                          0x48 (松开之前的大小)
- .eh_frame      0x00000000c0007f3c      0x188 /home/jxb/OS/build/string.o
+ .eh_frame      0x00000000c000b920      0x188 /home/jxb/OS/build/string.o
                                         0x1b4 (松开之前的大小)
- .eh_frame      0x00000000c00080c4      0x2d8 /home/jxb/OS/build/memory.o
+ .eh_frame      0x00000000c000baa8      0x2d8 /home/jxb/OS/build/memory.o
                                         0x318 (松开之前的大小)
- .eh_frame      0x00000000c000839c       0x8c /home/jxb/OS/build/bitmap.o
-                                         0xb8 (松开之前的大小)
- .eh_frame      0x00000000c0008428      0x1d8 /home/jxb/OS/build/thread.o
+ .eh_frame      0x00000000c000bd80       0x90 /home/jxb/OS/build/bitmap.o
+                                         0xbc (松开之前的大小)
+ .eh_frame      0x00000000c000be10      0x1d8 /home/jxb/OS/build/thread.o
                                         0x218 (松开之前的大小)
- .eh_frame      0x00000000c0008600      0x148 /home/jxb/OS/build/list.o
+ .eh_frame      0x00000000c000bfe8      0x148 /home/jxb/OS/build/list.o
                                         0x188 (松开之前的大小)
- .eh_frame      0x00000000c0008748       0xd8 /home/jxb/OS/build/console.o
+ .eh_frame      0x00000000c000c130       0xd8 /home/jxb/OS/build/console.o
                                         0x118 (松开之前的大小)
- .eh_frame      0x00000000c0008820       0xdc /home/jxb/OS/build/sync.o
+ .eh_frame      0x00000000c000c208       0xdc /home/jxb/OS/build/sync.o
                                         0x11c (松开之前的大小)
- .eh_frame      0x00000000c00088fc       0x68 /home/jxb/OS/build/keyboard.o
+ .eh_frame      0x00000000c000c2e4       0x68 /home/jxb/OS/build/keyboard.o
                                          0xa8 (松开之前的大小)
- .eh_frame      0x00000000c0008964       0xf4 /home/jxb/OS/build/ioqueue.o
+ .eh_frame      0x00000000c000c34c       0xf4 /home/jxb/OS/build/ioqueue.o
                                         0x134 (松开之前的大小)
- .eh_frame      0x00000000c0008a58       0x6c /home/jxb/OS/build/tss.o
+ .eh_frame      0x00000000c000c440       0x6c /home/jxb/OS/build/tss.o
                                          0xac (松开之前的大小)
- .eh_frame      0x00000000c0008ac4       0xd8 /home/jxb/OS/build/process.o
+ .eh_frame      0x00000000c000c4ac       0xd8 /home/jxb/OS/build/process.o
                                         0x118 (松开之前的大小)
- .eh_frame      0x00000000c0008b9c       0x6c /home/jxb/OS/build/syscall_init.o
-                                         0xac (松开之前的大小)
- .eh_frame      0x00000000c0008c08       0x8c /home/jxb/OS/build/syscall.o
+ .eh_frame      0x00000000c000c584       0x48 /home/jxb/OS/build/syscall_init.o
+                                         0x88 (松开之前的大小)
+ .eh_frame      0x00000000c000c5cc       0x8c /home/jxb/OS/build/syscall.o
                                          0xb8 (松开之前的大小)
- .eh_frame      0x00000000c0008c94       0x90 /home/jxb/OS/build/stdio.o
+ .eh_frame      0x00000000c000c658       0x90 /home/jxb/OS/build/stdio.o
                                          0xd0 (松开之前的大小)
- .eh_frame      0x00000000c0008d24       0x28 /home/jxb/OS/build/stdio_kernel.o
+ .eh_frame      0x00000000c000c6e8       0x28 /home/jxb/OS/build/stdio_kernel.o
                                          0x54 (松开之前的大小)
- .eh_frame      0x00000000c0008d4c      0x258 /home/jxb/OS/build/ide.o
+ .eh_frame      0x00000000c000c710      0x258 /home/jxb/OS/build/ide.o
                                         0x298 (松开之前的大小)
+ .eh_frame      0x00000000c000c968      0x164 /home/jxb/OS/build/fs.o
+                                        0x190 (松开之前的大小)
+ .eh_frame      0x00000000c000cacc       0xd0 /home/jxb/OS/build/inode.o
+                                        0x110 (松开之前的大小)
+ .eh_frame      0x00000000c000cb9c      0x14c /home/jxb/OS/build/file.o
+                                        0x1a0 (松开之前的大小)
+ .eh_frame      0x00000000c000cce8       0x74 /home/jxb/OS/build/dir.o
+                                         0xa0 (松开之前的大小)
  *(.eh_frame.*)
 
 .gcc_except_table
@@ -532,7 +610,7 @@ LOAD /home/jxb/OS/build/ide.o
 
 .exception_ranges
  *(.exception_ranges*)
-                0x00000000c000a000                . = DATA_SEGMENT_ALIGN (CONSTANT (MAXPAGESIZE), CONSTANT (COMMONPAGESIZE))
+                0x00000000c000e000                . = DATA_SEGMENT_ALIGN (CONSTANT (MAXPAGESIZE), CONSTANT (COMMONPAGESIZE))
 
 .eh_frame
  *(.eh_frame)
@@ -547,7 +625,7 @@ LOAD /home/jxb/OS/build/ide.o
 .exception_ranges
  *(.exception_ranges*)
 
-.tdata          0x00000000c000a000        0x0
+.tdata          0x00000000c000e000        0x0
                 [!provide]                        PROVIDE (__tdata_start = .)
  *(.tdata .tdata.* .gnu.linkonce.td.*)
 
@@ -555,18 +633,18 @@ LOAD /home/jxb/OS/build/ide.o
  *(.tbss .tbss.* .gnu.linkonce.tb.*)
  *(.tcommon)
 
-.preinit_array  0x00000000c000a000        0x0
+.preinit_array  0x00000000c000e000        0x0
                 [!provide]                        PROVIDE (__preinit_array_start = .)
  *(.preinit_array)
                 [!provide]                        PROVIDE (__preinit_array_end = .)
 
-.init_array     0x00000000c000a000        0x0
+.init_array     0x00000000c000e000        0x0
                 [!provide]                        PROVIDE (__init_array_start = .)
  *(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*))
  *(.init_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .ctors)
                 [!provide]                        PROVIDE (__init_array_end = .)
 
-.fini_array     0x00000000c000a000        0x0
+.fini_array     0x00000000c000e000        0x0
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*))
  *(.fini_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .dtors)
@@ -596,121 +674,134 @@ LOAD /home/jxb/OS/build/ide.o
 .dynamic
  *(.dynamic)
 
-.got            0x00000000c000a000        0x0
+.got            0x00000000c000e000        0x0
  *(.got)
- .got           0x00000000c000a000        0x0 /home/jxb/OS/build/main.o
+ .got           0x00000000c000e000        0x0 /home/jxb/OS/build/main.o
  *(.igot)
-                0x00000000c000aff4                . = DATA_SEGMENT_RELRO_END (., (SIZEOF (.got.plt) >= 0xc)?0xc:0x0)
+                0x00000000c000eff4                . = DATA_SEGMENT_RELRO_END (., (SIZEOF (.got.plt) >= 0xc)?0xc:0x0)
 
-.got.plt        0x00000000c000a000        0xc
+.got.plt        0x00000000c000e000        0xc
  *(.got.plt)
- .got.plt       0x00000000c000a000        0xc /home/jxb/OS/build/main.o
-                0x00000000c000a000                _GLOBAL_OFFSET_TABLE_
+ .got.plt       0x00000000c000e000        0xc /home/jxb/OS/build/main.o
+                0x00000000c000e000                _GLOBAL_OFFSET_TABLE_
  *(.igot.plt)
- .igot.plt      0x00000000c000a00c        0x0 /home/jxb/OS/build/main.o
+ .igot.plt      0x00000000c000e00c        0x0 /home/jxb/OS/build/main.o
 
-.data           0x00000000c000a020      0x156
+.data           0x00000000c000e020      0x156
  *(.data .data.* .gnu.linkonce.d.*)
- .data          0x00000000c000a020        0x0 /home/jxb/OS/build/main.o
- .data          0x00000000c000a020        0x0 /home/jxb/OS/build/init.o
- .data          0x00000000c000a020        0x0 /home/jxb/OS/build/interrupt.o
- .data          0x00000000c000a020        0x0 /home/jxb/OS/build/timer.o
- .data          0x00000000c000a020       0xd2 /home/jxb/OS/build/kernel.o
-                0x00000000c000a032                intr_entry_table
- *fill*         0x00000000c000a0f2        0x2 
- .data          0x00000000c000a0f4        0x8 /home/jxb/OS/build/print.o
- .data          0x00000000c000a0fc        0x0 /home/jxb/OS/build/debug.o
- .data          0x00000000c000a0fc        0x0 /home/jxb/OS/build/string.o
- .data          0x00000000c000a0fc        0x0 /home/jxb/OS/build/memory.o
- .data          0x00000000c000a0fc        0x0 /home/jxb/OS/build/bitmap.o
- .data          0x00000000c000a0fc        0x0 /home/jxb/OS/build/thread.o
- .data          0x00000000c000a0fc        0x0 /home/jxb/OS/build/list.o
- .data          0x00000000c000a0fc        0x0 /home/jxb/OS/build/console.o
- .data          0x00000000c000a0fc        0x0 /home/jxb/OS/build/sync.o
- *fill*         0x00000000c000a0fc        0x4 
- .data          0x00000000c000a100       0x76 /home/jxb/OS/build/keyboard.o
- .data          0x00000000c000a176        0x0 /home/jxb/OS/build/ioqueue.o
- .data          0x00000000c000a176        0x0 /home/jxb/OS/build/tss.o
- .data          0x00000000c000a176        0x0 /home/jxb/OS/build/process.o
- .data          0x00000000c000a176        0x0 /home/jxb/OS/build/syscall_init.o
- .data          0x00000000c000a176        0x0 /home/jxb/OS/build/syscall.o
- .data          0x00000000c000a176        0x0 /home/jxb/OS/build/stdio.o
- .data          0x00000000c000a176        0x0 /home/jxb/OS/build/stdio_kernel.o
- .data          0x00000000c000a176        0x0 /home/jxb/OS/build/ide.o
+ .data          0x00000000c000e020        0x0 /home/jxb/OS/build/main.o
+ .data          0x00000000c000e020        0x0 /home/jxb/OS/build/init.o
+ .data          0x00000000c000e020        0x0 /home/jxb/OS/build/interrupt.o
+ .data          0x00000000c000e020        0x0 /home/jxb/OS/build/timer.o
+ .data          0x00000000c000e020       0xd2 /home/jxb/OS/build/kernel.o
+                0x00000000c000e032                intr_entry_table
+ *fill*         0x00000000c000e0f2        0x2 
+ .data          0x00000000c000e0f4        0x8 /home/jxb/OS/build/print.o
+ .data          0x00000000c000e0fc        0x0 /home/jxb/OS/build/debug.o
+ .data          0x00000000c000e0fc        0x0 /home/jxb/OS/build/string.o
+ .data          0x00000000c000e0fc        0x0 /home/jxb/OS/build/memory.o
+ .data          0x00000000c000e0fc        0x0 /home/jxb/OS/build/bitmap.o
+ .data          0x00000000c000e0fc        0x0 /home/jxb/OS/build/thread.o
+ .data          0x00000000c000e0fc        0x0 /home/jxb/OS/build/list.o
+ .data          0x00000000c000e0fc        0x0 /home/jxb/OS/build/console.o
+ .data          0x00000000c000e0fc        0x0 /home/jxb/OS/build/sync.o
+ *fill*         0x00000000c000e0fc        0x4 
+ .data          0x00000000c000e100       0x76 /home/jxb/OS/build/keyboard.o
+ .data          0x00000000c000e176        0x0 /home/jxb/OS/build/ioqueue.o
+ .data          0x00000000c000e176        0x0 /home/jxb/OS/build/tss.o
+ .data          0x00000000c000e176        0x0 /home/jxb/OS/build/process.o
+ .data          0x00000000c000e176        0x0 /home/jxb/OS/build/syscall_init.o
+ .data          0x00000000c000e176        0x0 /home/jxb/OS/build/syscall.o
+ .data          0x00000000c000e176        0x0 /home/jxb/OS/build/stdio.o
+ .data          0x00000000c000e176        0x0 /home/jxb/OS/build/stdio_kernel.o
+ .data          0x00000000c000e176        0x0 /home/jxb/OS/build/ide.o
+ .data          0x00000000c000e176        0x0 /home/jxb/OS/build/fs.o
+ .data          0x00000000c000e176        0x0 /home/jxb/OS/build/inode.o
+ .data          0x00000000c000e176        0x0 /home/jxb/OS/build/file.o
+ .data          0x00000000c000e176        0x0 /home/jxb/OS/build/dir.o
 
 .data1
  *(.data1)
-                0x00000000c000a176                _edata = .
+                0x00000000c000e176                _edata = .
                 [!provide]                        PROVIDE (edata = .)
-                0x00000000c000a176                . = .
-                0x00000000c000a176                __bss_start = .
+                0x00000000c000e176                . = .
+                0x00000000c000e176                __bss_start = .
 
-.bss            0x00000000c000a180     0x1870
+.bss            0x00000000c000e180     0x1c08
  *(.dynbss)
  *(.bss .bss.* .gnu.linkonce.b.*)
- .bss           0x00000000c000a180        0x0 /home/jxb/OS/build/main.o
- .bss           0x00000000c000a180        0x0 /home/jxb/OS/build/init.o
- .bss           0x00000000c000a180      0x408 /home/jxb/OS/build/interrupt.o
- .bss           0x00000000c000a588        0x0 /home/jxb/OS/build/timer.o
- .bss           0x00000000c000a588        0x0 /home/jxb/OS/build/debug.o
- .bss           0x00000000c000a588        0x0 /home/jxb/OS/build/string.o
- .bss           0x00000000c000a588        0x0 /home/jxb/OS/build/memory.o
- .bss           0x00000000c000a588        0x0 /home/jxb/OS/build/bitmap.o
- .bss           0x00000000c000a588        0x8 /home/jxb/OS/build/thread.o
- .bss           0x00000000c000a590        0x0 /home/jxb/OS/build/list.o
- .bss           0x00000000c000a590       0x1c /home/jxb/OS/build/console.o
- .bss           0x00000000c000a5ac        0x0 /home/jxb/OS/build/sync.o
- .bss           0x00000000c000a5ac       0x14 /home/jxb/OS/build/keyboard.o
- .bss           0x00000000c000a5c0        0x0 /home/jxb/OS/build/ioqueue.o
- .bss           0x00000000c000a5c0       0x6c /home/jxb/OS/build/tss.o
- .bss           0x00000000c000a62c        0x0 /home/jxb/OS/build/process.o
- .bss           0x00000000c000a62c        0x0 /home/jxb/OS/build/syscall_init.o
- .bss           0x00000000c000a62c        0x0 /home/jxb/OS/build/syscall.o
- .bss           0x00000000c000a62c        0x0 /home/jxb/OS/build/stdio.o
- .bss           0x00000000c000a62c        0x0 /home/jxb/OS/build/stdio_kernel.o
- .bss           0x00000000c000a62c        0x6 /home/jxb/OS/build/ide.o
-                0x00000000c000a62c                ext_lba_base
-                0x00000000c000a630                p_no
-                0x00000000c000a631                l_no
+ .bss           0x00000000c000e180        0x0 /home/jxb/OS/build/main.o
+ .bss           0x00000000c000e180        0x0 /home/jxb/OS/build/init.o
+ .bss           0x00000000c000e180      0x408 /home/jxb/OS/build/interrupt.o
+ .bss           0x00000000c000e588        0x0 /home/jxb/OS/build/timer.o
+ .bss           0x00000000c000e588        0x0 /home/jxb/OS/build/debug.o
+ .bss           0x00000000c000e588        0x0 /home/jxb/OS/build/string.o
+ .bss           0x00000000c000e588        0x0 /home/jxb/OS/build/memory.o
+ .bss           0x00000000c000e588        0x0 /home/jxb/OS/build/bitmap.o
+ .bss           0x00000000c000e588        0x8 /home/jxb/OS/build/thread.o
+ .bss           0x00000000c000e590        0x0 /home/jxb/OS/build/list.o
+ .bss           0x00000000c000e590       0x1c /home/jxb/OS/build/console.o
+ .bss           0x00000000c000e5ac        0x0 /home/jxb/OS/build/sync.o
+ .bss           0x00000000c000e5ac       0x14 /home/jxb/OS/build/keyboard.o
+ .bss           0x00000000c000e5c0        0x0 /home/jxb/OS/build/ioqueue.o
+ .bss           0x00000000c000e5c0       0x6c /home/jxb/OS/build/tss.o
+ .bss           0x00000000c000e62c        0x0 /home/jxb/OS/build/process.o
+ .bss           0x00000000c000e62c        0x0 /home/jxb/OS/build/syscall_init.o
+ .bss           0x00000000c000e62c        0x0 /home/jxb/OS/build/syscall.o
+ .bss           0x00000000c000e62c        0x0 /home/jxb/OS/build/stdio.o
+ .bss           0x00000000c000e62c        0x0 /home/jxb/OS/build/stdio_kernel.o
+ .bss           0x00000000c000e62c        0x6 /home/jxb/OS/build/ide.o
+                0x00000000c000e62c                ext_lba_base
+                0x00000000c000e630                p_no
+                0x00000000c000e631                l_no
+ .bss           0x00000000c000e632        0x0 /home/jxb/OS/build/fs.o
+ .bss           0x00000000c000e632        0x0 /home/jxb/OS/build/inode.o
+ .bss           0x00000000c000e632        0x0 /home/jxb/OS/build/file.o
+ .bss           0x00000000c000e632        0x0 /home/jxb/OS/build/dir.o
  *(COMMON)
- *fill*         0x00000000c000a632        0x2 
- COMMON         0x00000000c000a634        0x4 /home/jxb/OS/build/main.o
-                0x00000000c000a634                prog_a_pid
- *fill*         0x00000000c000a638        0x8 
- COMMON         0x00000000c000a640       0x80 /home/jxb/OS/build/init.o
-                0x00000000c000a640                syscall_table
- COMMON         0x00000000c000a6c0      0x424 /home/jxb/OS/build/interrupt.o
-                0x00000000c000a6c0                intr_name
-                0x00000000c000a8e0                idt_table
- COMMON         0x00000000c000aae4        0x4 /home/jxb/OS/build/timer.o
-                0x00000000c000aae4                ticks
- *fill*         0x00000000c000aae8       0x18 
- COMMON         0x00000000c000ab00      0x12c /home/jxb/OS/build/memory.o
-                0x00000000c000ab00                user_pool
-                0x00000000c000ab40                k_block_descs
-                0x00000000c000abe8                kernel_vaddr
-                0x00000000c000ac00                kernel_pool
- COMMON         0x00000000c000ac2c       0x44 /home/jxb/OS/build/thread.o
-                0x00000000c000ac2c                thread_ready_list
-                0x00000000c000ac3c                thread_all_list
-                0x00000000c000ac4c                idle_thread
-                0x00000000c000ac50                main_thread
-                0x00000000c000ac54                pid_lock
- *fill*         0x00000000c000ac70       0x10 
- COMMON         0x00000000c000ac80       0x6c /home/jxb/OS/build/keyboard.o
-                0x00000000c000ac80                kdb_buf
- *fill*         0x00000000c000acec       0x14 
- COMMON         0x00000000c000ad00      0xcf0 /home/jxb/OS/build/ide.o
-                0x00000000c000ad00                channel_cnt
-                0x00000000c000ad20                channels
-                0x00000000c000b9e0                partition_list
-                0x00000000c000b9f0                . = ALIGN ((. != 0x0)?0x4:0x1)
-                0x00000000c000b9f0                . = ALIGN (0x4)
-                0x00000000c000b9f0                . = SEGMENT_START ("ldata-segment", .)
-                0x00000000c000b9f0                . = ALIGN (0x4)
-                0x00000000c000b9f0                _end = .
+ *fill*         0x00000000c000e632        0xe 
+ COMMON         0x00000000c000e640      0xcf0 /home/jxb/OS/build/main.o
+                0x00000000c000e640                prog_a_pid
+                0x00000000c000e644                channel_cnt
+                0x00000000c000e660                channels
+                0x00000000c000f320                partition_list
+ *fill*         0x00000000c000f330       0x10 
+ COMMON         0x00000000c000f340       0x80 /home/jxb/OS/build/init.o
+                0x00000000c000f340                syscall_table
+ COMMON         0x00000000c000f3c0      0x424 /home/jxb/OS/build/interrupt.o
+                0x00000000c000f3c0                intr_name
+                0x00000000c000f5e0                idt_table
+ COMMON         0x00000000c000f7e4        0x4 /home/jxb/OS/build/timer.o
+                0x00000000c000f7e4                ticks
+ *fill*         0x00000000c000f7e8       0x18 
+ COMMON         0x00000000c000f800      0x12c /home/jxb/OS/build/memory.o
+                0x00000000c000f800                user_pool
+                0x00000000c000f840                k_block_descs
+                0x00000000c000f8e8                kernel_vaddr
+                0x00000000c000f900                kernel_pool
+ COMMON         0x00000000c000f92c       0x44 /home/jxb/OS/build/thread.o
+                0x00000000c000f92c                thread_ready_list
+                0x00000000c000f93c                thread_all_list
+                0x00000000c000f94c                idle_thread
+                0x00000000c000f950                main_thread
+                0x00000000c000f954                pid_lock
+ *fill*         0x00000000c000f970       0x10 
+ COMMON         0x00000000c000f980       0x6c /home/jxb/OS/build/keyboard.o
+                0x00000000c000f980                kdb_buf
+ COMMON         0x00000000c000f9ec        0x4 /home/jxb/OS/build/fs.o
+                0x00000000c000f9ec                cur_part
+ *fill*         0x00000000c000f9f0       0x10 
+ COMMON         0x00000000c000fa00      0x180 /home/jxb/OS/build/file.o
+                0x00000000c000fa00                file_table
+ COMMON         0x00000000c000fb80      0x208 /home/jxb/OS/build/dir.o
+                0x00000000c000fb80                root_dir
+                0x00000000c000fd88                . = ALIGN ((. != 0x0)?0x4:0x1)
+                0x00000000c000fd88                . = ALIGN (0x4)
+                0x00000000c000fd88                . = SEGMENT_START ("ldata-segment", .)
+                0x00000000c000fd88                . = ALIGN (0x4)
+                0x00000000c000fd88                _end = .
                 [!provide]                        PROVIDE (end = .)
-                0x00000000c000b9f0                . = DATA_SEGMENT_END (.)
+                0x00000000c000fd88                . = DATA_SEGMENT_END (.)
 
 .stab
  *(.stab)
@@ -754,6 +845,10 @@ LOAD /home/jxb/OS/build/ide.o
  .comment       0x0000000000000023       0x24 /home/jxb/OS/build/stdio.o
  .comment       0x0000000000000023       0x24 /home/jxb/OS/build/stdio_kernel.o
  .comment       0x0000000000000023       0x24 /home/jxb/OS/build/ide.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/fs.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/inode.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/file.o
+ .comment       0x0000000000000023       0x24 /home/jxb/OS/build/dir.o
 
 .gnu.build.attributes
  *(.gnu.build.attributes .gnu.build.attributes.*)

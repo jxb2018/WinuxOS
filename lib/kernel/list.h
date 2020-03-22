@@ -30,6 +30,6 @@ void list_remove(struct list_elem* pelem);
 struct list_elem* list_pop(struct list* plist);
 int list_empty(struct list* plist);
 uint32_t list_len(struct list* plist);
-struct list_elem* list_traversal(struct list* plist, function func, int arg);
+struct list_elem* list_traversal(list* plist, function func, int arg);
 int elem_find(struct list* plist, struct list_elem* obj_elem);
 #endif

@@ -4,8 +4,11 @@
 #include "debug.h"
 #include "string.h"
 #include "bitmap.h"
+#include "/home/jxb/OS/lib/kernel/interrupt.h"
 #include "/home/jxb/OS/thread/sync.h"
 #include "/home/jxb/OS/thread/thread.h"
+#include "/home/jxb/OS/lib/kernel/stdio_kernel.h"
+
 #define PG_SIZE 4096 //页大小 4k
 #define MEM_BITMAP_ADDRESS 0xc009a000  //位图的位置
 #define K_HEAP_START 0xc0100000   //跨过低端1M内存
@@ -68,6 +71,7 @@ static void mem_pool_init(uint32_t total_mem){
      kernel_vaddr.vaddr_bitmap.btmp_bytes_len = kernel_btmp_bytes_len;
      kernel_vaddr.vaddr_start = K_HEAP_START;
      bitmap_init(&kernel_vaddr.vaddr_bitmap);
+
 
      //初始化锁
      lock_init(&kernel_pool.lock);
@@ -222,6 +226,7 @@ void block_desc_init(struct mem_block_desc* desc_array){
     uint16_t desc_idx,block_size = 16;
     //初始化mem_block_desc
     for(desc_idx = 0; desc_idx < DESC_CNT ;desc_idx++){
+   
         desc_array[desc_idx].block_size = block_size;
         //初始化arena中的内存块数量
         desc_array[desc_idx].blocks_pre_arena = (PG_SIZE - sizeof(struct arena))/block_size;
@@ -289,10 +294,11 @@ void* sys_malloc(uint32_t size) {
         for(desc_idx = 0; desc_idx < DESC_CNT; desc_idx++){
 	        if(size <= descs[desc_idx].block_size) break;
         }
-
         //为某一种规格创建新的arena
         if(list_empty(&descs[desc_idx].free_list)){
+            
 	        a = malloc_page(PF, 1);       // 分配1页框做为arena
+           // printk("malloc_page for arena addr:%x\n",(uint32_t)a);
 	        if(a == NULL){
 	            lock_release(&mem_pool->lock);
 	            return NULL;
@@ -314,17 +320,23 @@ void* sys_malloc(uint32_t size) {
 	            //ASSERT(!elem_find(&a->desc->free_list, &b->free_elem));
 	            list_append(&a->desc->free_list, &b->free_elem);	
 	        }
+            //printk("list_len : %d\n",list_len(&descs[desc_idx].free_list));
 	        //intr_set_status(old_status);
         }    
      /* 开始分配内存块 */
-      b = elem2entry(struct mem_block, free_elem, list_pop(&(descs[desc_idx].free_list)));
-      memset(b, 0, descs[desc_idx].block_size);
-      a = block2arena(b);  // 获取内存块b所在的arena
-      a->cnt--;		   // 将此arena中的空闲内存块数减1
-      lock_release(&mem_pool->lock);
-      return (void*)b;
+        printk("having %d ,",list_len(&(descs[desc_idx].free_list)));
+        b = elem2entry(struct mem_block, free_elem, list_pop(&(descs[desc_idx].free_list)));
+        memset(b, 0, descs[desc_idx].block_size);
+        a = block2arena(b);  // 获取内存块b所在的arena
+        a->cnt--;		   // 将此arena中的空闲内存块数减1
+        printk("require_block_size %d ,",descs[desc_idx]);printk("addr %x \n",b);
+        //printk("remain %d \n",list_len(&(descs[desc_idx].free_list)));
+        lock_release(&mem_pool->lock);
+        return (void*)b;
    }
 }
+
+
 
 //从物理地址池释放虚拟地址 将位图中对应的位置置零
 void pfree(uint32_t pg_phy_addr){ 

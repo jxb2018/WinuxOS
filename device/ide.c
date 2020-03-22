@@ -44,15 +44,15 @@
 #define CMD_WRITE_SECTOR   0x30	    // 写扇区指令
 
 
-uint8_t channel_cnt;  //按照硬盘数计算的通道数
-struct ide_channel channels[2]; //主板上支持4个IDE硬盘、提供两个IDE插槽(通道)
+
+
 
 //用来记录总拓展分区的起始lba
 uint32_t ext_lba_base = 0;
 
 uint8_t p_no = 0,l_no = 0; // 用来记录硬盘主分区和逻辑分区的下标
 
-list partition_list; //分区队列
+
 
 /* 选择读写的硬盘
 device寄存器：
@@ -95,7 +95,7 @@ void cmd_out(struct ide_channel* channel,uint8_t cmd){
 }
 
 //在已经设置好起始扇区地址和要读扇区数的基础上，从硬盘读入sec_cnt个扇区到buf
-static void read_from_sector(struct disk* hd,void* buf,uint32_t sec_cnt){
+void read_from_sector(struct disk* hd,void* buf,uint32_t sec_cnt){
     uint32_t size_byte = (sec_cnt == 0)? 256 * 512 : sec_cnt * 512; //sec_cnt=0，表示读写256扇区
     insw(reg_data(hd->my_channel),buf,size_byte/2);
 }
@@ -178,7 +178,7 @@ void ide_write(struct disk* hd,uint32_t lba,void* buf,uint32_t sec_cnt){
             PANIC(error);
         }
         //6. 写
-        write2sector(hd,buf,sec_cnt_per_op);
+        write2sector(hd,(void*)((uint32_t)buf + sec_cnt_done * 512),sec_cnt_per_op);
 
         //7. 自我阻塞
         sema_down(&hd->my_channel->disk_done);
@@ -261,11 +261,11 @@ void partition_scan(struct disk* hd,uint32_t ext_lba){
                 list_append(&partition_list,&hd->prim_parts[p_no].part_tag);
                 p_no++;
             }else{
-                sprintf(hd->prim_parts[l_no].name,"%s%d",hd->name,l_no+1);
-                hd->prim_parts[l_no].start_lba = ext_lba + pentry->start_lba;
-                hd->prim_parts[l_no].sec_cnt   = pentry->sec_cnt;
-                hd->prim_parts[l_no].my_disk   = hd;
-                list_append(&partition_list,&hd->prim_parts[l_no].part_tag);
+                sprintf(hd->logic_parts[l_no].name,"%s%d",hd->name,l_no+5);
+                hd->logic_parts[l_no].start_lba = ext_lba + pentry->start_lba;
+                hd->logic_parts[l_no].sec_cnt   = pentry->sec_cnt;
+                hd->logic_parts[l_no].my_disk   = hd;
+                list_append(&partition_list,&hd->logic_parts[l_no].part_tag);
                 l_no++;
                 ASSERT(l_no <= 8);//防止数组越界
             }
@@ -275,7 +275,7 @@ void partition_scan(struct disk* hd,uint32_t ext_lba){
     sys_free(bs);
 }
 //打印分区
-void partition_info(list_elem* pelem,int arg UNUSED){
+void partition_info(list_elem* pelem){
     struct partition* part = elem2entry(struct partition,part_tag,pelem);
     printk("    %s start_lba:0x%x,sec_cnt:0x%x\n",part->name,part->start_lba,part->sec_cnt);
     return;
@@ -335,7 +335,7 @@ void ide_int(){
         channel_no++; //开始处理下一个通道     
     }
     printk("\nall partition info\n");
-    //printk("%d\n",list_len(&partition_list));
+    //printk("%d\n",list_len(&partition_list)); ASSERT(0);
     list_traversal(&partition_list,partition_info,(int)NULL);
 
     printk("ide_init done\n");

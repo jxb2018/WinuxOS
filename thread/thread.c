@@ -11,6 +11,7 @@
 #include "/home/jxb/OS/userprog/process.h"
 #include "/home/jxb/OS/thread/sync.h"
 #define PG_SIZE 4096
+
 extern void switch_to(struct task_struct*,struct task_struct*);
 struct task_struct* main_thread;//主线程PCB
 struct task_struct* idle_thread;// 懒惰  系统空闲时运行的线程
@@ -76,11 +77,20 @@ void init_thread(struct task_struct* pthread,char* name,int priority){
     }else{
         pthread->status = TASK_READY;
     }
+    // 预留三个标准的文件描述符 标准输入 标准输出 标准错误
+    pthread->fd_table[0] = 0;
+    pthread->fd_table[1] = 1;
+    pthread->fd_table[2] = 2;
+    uint8_t fd_idx = 3;
+    while(fd_idx < MAX_FILES_OPEN_PER_PROC ){
+        pthread->fd_table[fd_idx] = -1; //表示文件描述符可分配
+        fd_idx++;
+    }
     pthread->pgdir = NULL;
     pthread->ticks = priority;
     pthread->elapsed_ticks = 0;
     pthread->priority = priority;
-    pthread->stack_magic = 'LGW';
+    pthread->stack_magic = 0x19980320;
     pthread->self_kstart = (uint32_t*)((uint32_t)pthread + PG_SIZE);//栈顶
 }
 

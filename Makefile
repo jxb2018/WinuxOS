@@ -4,7 +4,7 @@ ENTRY_POINT = 0xc0001500
 AS = nasm
 CC = gcc
 LD = ld
-LIB =  -I lib/kernel/ -I lib/user/ -I kernel/ -I device/ -I thread/
+LIB =  -I lib/kernel/ -I lib/user/ -I kernel/ -I device/ -I thread/ -I fs/ -I userprog/ -I lib/
 ASFLAGS = -f elf
 CFLAGS = -m32 -Wall $(LIB) -c -fno-stack-protector -fno-builtin -W -Wstrict-prototypes \
          -Wmissing-prototypes 
@@ -16,7 +16,8 @@ OBJS = $(BUILD_DIR)/main.o $(BUILD_DIR)/init.o $(BUILD_DIR)/interrupt.o \
 	  $(BUILD_DIR)/console.o $(BUILD_DIR)/sync.o $(BUILD_DIR)/keyboard.o \
 	  $(BUILD_DIR)/ioqueue.o $(BUILD_DIR)/tss.o $(BUILD_DIR)/process.o \
 	  $(BUILD_DIR)/syscall_init.o $(BUILD_DIR)/syscall.o $(BUILD_DIR)/stdio.o\
-	  $(BUILD_DIR)/stdio_kernel.o $(BUILD_DIR)/ide.o
+	  $(BUILD_DIR)/stdio_kernel.o $(BUILD_DIR)/ide.o $(BUILD_DIR)/fs.o \
+	  $(BUILD_DIR)/inode.o $(BUILD_DIR)/file.o $(BUILD_DIR)/dir.o
 
 ##############     c代码编译     ###############
 $(BUILD_DIR)/main.o: kernel/main.c lib/kernel/print.h \
@@ -24,7 +25,31 @@ $(BUILD_DIR)/main.o: kernel/main.c lib/kernel/print.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
+	$(CC) $(CFLAGS) $< -o $@
+
+$(BUILD_DIR)/inode.o: fs/inode.c lib/kernel/print.h \
+        lib/kernel/debug.h lib/kernel/init.h lib/kernel/stdint.h lib/kernel/string.h\
+		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
+		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
+		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
+	$(CC) $(CFLAGS) $< -o $@
+
+$(BUILD_DIR)/dir.o: fs/dir.c lib/kernel/print.h \
+        lib/kernel/debug.h lib/kernel/init.h lib/kernel/stdint.h lib/kernel/string.h\
+		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
+		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
+		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
+	$(CC) $(CFLAGS) $< -o $@
+
+$(BUILD_DIR)/file.o: fs/file.c lib/kernel/print.h \
+        lib/kernel/debug.h lib/kernel/init.h lib/kernel/stdint.h lib/kernel/string.h\
+		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
+		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
+		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/tss.o: userprog/tss.c lib/kernel/print.h \
@@ -32,7 +57,15 @@ $(BUILD_DIR)/tss.o: userprog/tss.c lib/kernel/print.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
+	$(CC) $(CFLAGS) $< -o $@
+
+$(BUILD_DIR)/fs.o: fs/fs.c lib/kernel/print.h \
+        lib/kernel/debug.h lib/kernel/init.h lib/kernel/stdint.h lib/kernel/string.h\
+		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
+		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
+		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/ide.o: device/ide.c lib/kernel/print.h \
@@ -40,7 +73,7 @@ $(BUILD_DIR)/ide.o: device/ide.c lib/kernel/print.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/stdio_kernel.o: lib/kernel/stdio_kernel.c lib/kernel/print.h \
@@ -48,7 +81,7 @@ $(BUILD_DIR)/stdio_kernel.o: lib/kernel/stdio_kernel.c lib/kernel/print.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/syscall_init.o: userprog/syscall_init.c lib/kernel/print.h \
@@ -56,7 +89,7 @@ $(BUILD_DIR)/syscall_init.o: userprog/syscall_init.c lib/kernel/print.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/syscall.o: lib/user/syscall.c lib/kernel/print.h \
@@ -64,7 +97,7 @@ $(BUILD_DIR)/syscall.o: lib/user/syscall.c lib/kernel/print.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/process.o: userprog/process.c lib/kernel/print.h \
@@ -72,7 +105,7 @@ $(BUILD_DIR)/process.o: userprog/process.c lib/kernel/print.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/keyboard.o: device/keyboard.c lib/kernel/print.h \
@@ -80,7 +113,7 @@ $(BUILD_DIR)/keyboard.o: device/keyboard.c lib/kernel/print.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/stdio.o: lib/stdio.c lib/kernel/print.h \
@@ -88,7 +121,7 @@ $(BUILD_DIR)/stdio.o: lib/stdio.c lib/kernel/print.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/init.o: kernel/init.c lib/kernel/init.h lib/kernel/print.h \
@@ -96,7 +129,7 @@ $(BUILD_DIR)/init.o: kernel/init.c lib/kernel/init.h lib/kernel/print.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/interrupt.o: kernel/interrupt.c lib/kernel/interrupt.h \
@@ -104,7 +137,7 @@ $(BUILD_DIR)/interrupt.o: kernel/interrupt.c lib/kernel/interrupt.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/timer.o: device/time.c lib/kernel/time.h lib/kernel/stdint.h\
@@ -112,7 +145,7 @@ $(BUILD_DIR)/timer.o: device/time.c lib/kernel/time.h lib/kernel/stdint.h\
 		 lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		 thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		 userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		 lib/kernel/stdio_kernel.h device/ide.h
+		 lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/debug.o: lib/kernel/debug.c lib/kernel/debug.h \
@@ -120,7 +153,7 @@ $(BUILD_DIR)/debug.o: lib/kernel/debug.c lib/kernel/debug.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/string.o: lib/kernel/string.c lib/kernel/debug.h \
@@ -128,7 +161,7 @@ $(BUILD_DIR)/string.o: lib/kernel/string.c lib/kernel/debug.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/bitmap.o: lib/kernel/bitmap.c lib/kernel/debug.h \
@@ -136,7 +169,7 @@ $(BUILD_DIR)/bitmap.o: lib/kernel/bitmap.c lib/kernel/debug.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/memory.o: lib/kernel/memory.c lib/kernel/debug.h \
@@ -144,7 +177,7 @@ $(BUILD_DIR)/memory.o: lib/kernel/memory.c lib/kernel/debug.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/list.o: lib/kernel/list.c lib/kernel/debug.h \
@@ -152,7 +185,7 @@ $(BUILD_DIR)/list.o: lib/kernel/list.c lib/kernel/debug.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/thread.o: thread/thread.c lib/kernel/debug.h \
@@ -160,7 +193,7 @@ $(BUILD_DIR)/thread.o: thread/thread.c lib/kernel/debug.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/console.o: device/console.c lib/kernel/debug.h \
@@ -168,7 +201,7 @@ $(BUILD_DIR)/console.o: device/console.c lib/kernel/debug.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/sync.o: thread/sync.c lib/kernel/debug.h \
@@ -176,7 +209,7 @@ $(BUILD_DIR)/sync.o: thread/sync.c lib/kernel/debug.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 
 $(BUILD_DIR)/ioqueue.o: device/ioqueue.c lib/kernel/debug.h \
@@ -184,7 +217,7 @@ $(BUILD_DIR)/ioqueue.o: device/ioqueue.c lib/kernel/debug.h \
 		lib/kernel/bitmap.h lib/kernel/memory.h thread/thread.h lib/kernel/list.h \
 		thread/sync.h lib/kernel/console.h device/keyboard.h device/ioqueue.h userprog/tss.h\
 		userprog/process.h lib/user/syscall.h userprog/syscall_init.h lib/stdio.h \
-		lib/kernel/stdio_kernel.h device/ide.h
+		lib/kernel/stdio_kernel.h device/ide.h fs/dir.h fs/fs.h fs/inode.h fs/file.h
 	$(CC) $(CFLAGS) $< -o $@
 ##############    汇编代码编译    ###############
 $(BUILD_DIR)/kernel.o: kernel/kernel.s

@@ -9,6 +9,7 @@
 #include "/home/jxb/OS/userprog/tss.h"
 #include "/home/jxb/OS/userprog/syscall_init.h"
 #include "/home/jxb/OS/device/ide.h"
+#include "/home/jxb/OS/fs/fs.h"
 void init_all(){
     put_str("init_all start\n");
     idt_init();
@@ -20,6 +21,7 @@ void init_all(){
     tss_init();
     syscall_init();
     ide_int();
+    filesys_init();
     put_str("init_all done\n");
 
 }

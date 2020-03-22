@@ -11,6 +11,9 @@
 #include "/home/jxb/OS/userprog/process.h"
 #include "/home/jxb/OS/lib/user/syscall.h"
 #include "/home/jxb/OS/lib/stdio.h"
+#include "/home/jxb/OS/fs/fs.h"
+#include "/home/jxb/OS/lib/kernel/stdio_kernel.h"
+#include "/home/jxb/OS/fs/file.h"
 void k1(void* arg);
 void u(void);
 void u1(void);
@@ -40,6 +43,16 @@ int main(void){
     //intr_enable();
     
     //prog_a_pid = getpid(); //c0004bb8
+    printk("-----helloooooooo\n");
+    uint32_t fd = sys_open("/file1",O_RDWR);
+    
+    sys_write(fd,"hello\n",6);
+    printk("finsh!\n");
+
+    char buf[64] = {0};
+    printk("%d\n",fd);
+    sys_read(fd,buf,6);
+    printk("%s \n",buf);
     while(1);
     return 0;
 }

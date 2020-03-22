@@ -13,16 +13,11 @@
 #include "/home/jxb/OS/lib/kernel/string.h"
 #include "/home/jxb/OS/lib/user/syscall.h"
 #include "/home/jxb/OS/userprog/syscall_init.h"
-
+#include "/home/jxb/OS/fs/fs.h"
 
 //返回当前任务的pid
 uint32_t sys_getpid(void){
     return running_thread()->pid;
-}
-//打印字符串
-uint32_t sys_write(char* str){
-    console_put_str(str);
-    return strlen(str);
 }
 
 //初始化系统调用

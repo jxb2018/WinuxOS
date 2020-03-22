@@ -52,14 +52,18 @@ int elem_find(list* plist,list_elem* obj_elem){
     }
     return 0;
 }
+int list_empty(list* plist){
+    return (plist->head.next == &plist->tail)? 1 : 0;
+}
 //length
-uint32_t list_len(list* plist){
-    uint32_t ret = 0;
-    list_elem* p = plist->head.next;
-    while(p != &plist->tail){
-        ret++;p=p->next;
-    }
-    return ret;
+uint32_t list_len(struct list* plist) {
+   struct list_elem* elem = plist->head.next;
+   uint32_t length = 0;
+   while (elem != &plist->tail) {
+      length++; 
+      elem = elem->next;
+   }
+   return length;
 }
 //
 list_elem* list_traversal(list* plist,function func,int arg){
@@ -70,7 +74,4 @@ list_elem* list_traversal(list* plist,function func,int arg){
         elem = elem->next;
     }
     return NULL;
-}
-int list_empty(list* plist){
-    return (plist->head.next == &plist->tail)? 1 : 0;
 }

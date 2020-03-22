@@ -20,7 +20,7 @@ uint32_t ticks;//总的
 //时钟的中断处理程序
 static void intr_time_handle(void){
     struct task_struct* current_thread = running_thread();//获取当前正在运行的线程
-    ASSERT(current_thread->stack_magic == 'LGW');//检查栈是否溢出
+    ASSERT(current_thread->stack_magic == 0x19980320);//检查栈是否溢出
     current_thread->elapsed_ticks++;
     ticks++;
     if(current_thread->ticks == 0){

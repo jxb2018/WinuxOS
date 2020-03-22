@@ -65,7 +65,7 @@ uint32_t printf(const char* format,...){
     va_list args = (va_list)&format;  //args 指向 format
     char buf[1024] = {0}; //存储拼接后的字符串
     vsprintf(buf,format,args);
-    return write(buf);
+    return write(1,buf,strlen(buf));
 }
 
 /* 同printf不同的地方就是字符串不是写到终端,而是写到buf中 */
